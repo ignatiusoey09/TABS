@@ -26,7 +26,7 @@ export default function Navbar({ show, setter } : IProps) {
     );
     return (
         <>
-            <div className= {`flex flex-col fixed h-screen w-4/6 p-2 ${appendClass} bg-tembu-green z-50`}>
+            <div className= {`flex flex-col fixed h-screen w-4/6 ${appendClass} bg-tembu-green z-50`}>
                 <h2 className='basis-1/12 mt-4 text-center text-white text-2xl font-family-metrophobic'>TABS</h2>
                 <div className='flex flex-col basis-7/12 justify-center'>
                     <NavbarButton icon={ <ProfileIcon height={50} width={50} />} text='Profile'/>
