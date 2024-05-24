@@ -17,16 +17,20 @@ interface IProps {
 }
 
 export default function Navbar({ show, setter } : IProps) {
+
     const appendClass = show ? "ml-0" : "-ml-[500px]";
+    const transitionClass = "transition-[margin-left] ease-in-out duration-500";
+
     const ModalOverlay = () => (
+        //spans the entire screen but is invisible
         <div 
-            className='flex fixed top-0 right-0 bottom-0 left-0 bg-black/30 z-10'
+            className= "flex fixed top-0 left-0 right-0 bottom-0 z-10"
             onClick={() => setter(false)}
         />
     );
     return (
         <>
-            <div className= {`flex flex-col fixed h-screen w-4/6 ${appendClass} bg-tembu-green z-50`}>
+            <div className= {`flex flex-col fixed h-screen w-4/6 ${transitionClass} ${appendClass} bg-tembu-green z-50`}>
                 <h2 className='basis-1/12 mt-4 text-center text-white text-2xl font-family-metrophobic'>TABS</h2>
                 <div className='flex flex-col basis-7/12 justify-center'>
                     <NavbarButton icon={ <ProfileIcon height={50} width={50} />} text='Profile'/>
