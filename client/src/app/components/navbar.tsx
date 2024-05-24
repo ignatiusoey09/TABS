@@ -24,7 +24,7 @@ export default function Navbar({ show, setter } : IProps) {
     const ModalOverlay = () => (
         //spans the entire screen but is invisible
         <div 
-            className= "flex fixed top-0 left-0 right-0 bottom-0 z-10"
+            className= "flex fixed top-0 left-0 right-0 bottom-0 z-40"
             onClick={() => setter(false)}
         />
     );
