@@ -19,7 +19,8 @@ module.exports = {
                     loader: '@svgr/webpack',
                     options: {
                         typescript: true,
-                        ext: 'tsx'
+                        ext: 'tsx',
+                        icon: true,
                     }
                 }],
             }
