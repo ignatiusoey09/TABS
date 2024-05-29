@@ -41,10 +41,20 @@ app.post("/api/login", upload.none(), async (req, res) => {
         }
 
     } catch {
-        console.log("error querying database");
+        console.log("error querying database (Login)");
     }
+})
 
-    
+app.post("/api/book", async (req, res) => {
+
+    try {
+        await client.connect();
+        const result = await client.db("tabs_main").collection("bookings");
+        client.close();
+
+    } catch {
+        console.log("error querying database (Booking)")
+    }
 })
 
 app.listen(PORT, () => {
