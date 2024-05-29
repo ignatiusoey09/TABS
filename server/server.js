@@ -48,16 +48,26 @@ app.post("/api/login", upload.none(), async (req, res) => {
 app.use(express.json());
 
 app.post("/api/book", async (req, res) => {
-    let dd = req.body["date"];
-    res.json({date: dd});
-    /*try {
+    let query_date = req.body["date"];
+    console.log(query_date);
+
+    try {
         await client.connect();
-        const result = await client.db("tabs_main").collection("bookings");
+        const result = await client.db("tabs_main").collection("bookings")
+            .findOne({date: query_date});
         client.close();
+
+        console.log(result);
+        if (result != null) {
+            console.log("found!");
+            res.json({timeslots: result["slots"]});
+        } else {
+            res.json({timeslots: []});
+        }
 
     } catch {
         console.log("error querying database (Booking)")
-    }*/
+    }
 })
 
 app.listen(PORT, () => {
