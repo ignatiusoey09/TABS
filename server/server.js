@@ -45,16 +45,19 @@ app.post("/api/login", upload.none(), async (req, res) => {
     }
 })
 
-app.post("/api/book", async (req, res) => {
+app.use(express.json());
 
-    try {
+app.post("/api/book", async (req, res) => {
+    let dd = req.body["date"];
+    res.json({date: dd});
+    /*try {
         await client.connect();
         const result = await client.db("tabs_main").collection("bookings");
         client.close();
 
     } catch {
         console.log("error querying database (Booking)")
-    }
+    }*/
 })
 
 app.listen(PORT, () => {

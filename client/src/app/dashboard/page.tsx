@@ -12,6 +12,29 @@ export default function Dashboard() {
 
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
 
+    const handleQuery = async (date:Value) => {
+        const query_date = (date as Date).toDateString();
+        console.log(query_date);
+        try {
+            const response = await fetch("http://localhost:8080/api/book", {
+                headers: {'Content-Type': 'application/JSON'},
+                method: "POST",
+                body: JSON.stringify({date: query_date})
+            });
+
+            const response_data = await response.json();
+
+            console.log(response_data);
+        } catch {
+            console.log("error contacting server");
+        }
+    }
+
+    const handleChange = async (date:Value) => {
+        onChange_calendarValue(date);
+        handleQuery(date);
+    }
+
     const Child = () => (
         <>
             <div className='w-[90%] h-[50%] self-center'>
@@ -19,7 +42,7 @@ export default function Dashboard() {
                     calendarType='gregory' 
                     formatShortWeekday={(locale, date) => [ `S`, `M`, `T`, `W`, `T`, `F`, `S` ][date.getDay()]}
                     value={calendarValue}
-                    onChange={onChange_calendarValue}
+                    onChange={handleChange}
                     next2Label={null}
                     prev2Label={null}
                 />
@@ -30,7 +53,7 @@ export default function Dashboard() {
         </>
     );
 
-    console.log(calendarValue);
+    
 
     return (
         <Layout children={<Child />} />
