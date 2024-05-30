@@ -1,6 +1,7 @@
 'use client'
 
 import Layout from '../components/layout';
+import TimeslotButton from '../components/timeslot_button';
 import Calendar from 'react-calendar';
 import './Calendar.css';
 import { useState } from 'react';
@@ -8,10 +9,15 @@ import { useState } from 'react';
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+type T_timeslot = {
+    time: string,
+    is_booked: boolean
+}
+
 export default function Dashboard() {
 
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
-    const [timeslots, set_timeSlots] = useState<Array<JSON>>([]); 
+    const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
 
     const handleQuery = async (date:Value) => {
         const query_date = (date as Date).toDateString();
@@ -48,9 +54,10 @@ export default function Dashboard() {
                     prev2Label={null}
                 />
             </div>
-            <div className='border-2 mt-6 grow'>
-                <h1>time slots here</h1>
-                {timeslots.map((x, i) => <h2>{JSON.stringify(x)}</h2>)}
+            <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
+                {
+                    timeslots.map((x, i) => <TimeslotButton key={i} timeslot={x}/>)
+                }
             </div>
         </>
     );
