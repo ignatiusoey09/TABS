@@ -1,15 +1,8 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
-//TODO: remove username and password from uri before pushing to production
-const uri = "mongodb+srv://tabs_orbital:tempoIsGreat696@cluster0.xcjr2u9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true
-    }
-});
+const uri = process.env.URI;
 
 const express = require("express");
 const cors = require("cors");
@@ -17,7 +10,6 @@ const multer = require("multer");
 const upload = multer();
 
 const app = express();
-const PORT = 8080;
 
 //importing routes
 const userRoutes = require('./routes/user');
@@ -89,8 +81,9 @@ async function populateMonth() {
 
 mongoose.connect(uri, {dbName: "tabs_main"}).then(() => {
     //listen for requests
-    app.listen(PORT, () => {
-        console.log(`started on port ${PORT}`);
+    const port = process.env.PORT;
+    app.listen(port, () => {
+        console.log(`started on port ${port}`);
     });
 }).catch((error) => {
     console.log(error);
