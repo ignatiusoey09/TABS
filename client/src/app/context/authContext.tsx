@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useReducer, Dispatch } from "react";
 
 //have to define this interface for some reason idk
