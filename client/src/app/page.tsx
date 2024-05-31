@@ -36,7 +36,7 @@ export default function Home() {
       <h2 className="text-center text-6xl text-title-gray">TABS</h2>
       <h1 className="text-center mt-1 text-title-gray">Tembusu Abbey Booking System</h1>
         <input type="email" name="email" className="mt-16" placeholder="Email:" required/>
-        <input type="text" name="password" placeholder="Password:"  required/>
+        <input type="password" name="password" placeholder="Password:"  required/>
       <button className="bg-tembu-lightgreen rounded text-white mt-5" type="submit">
         Login
       </button>
