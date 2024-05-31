@@ -1,4 +1,9 @@
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+
+const createToken = (_id) => {
+    return jwt.sign({_id}, process.env.SECRET, {expiresIn: '1d'});
+}
 
 const loginUser = async (req, res) => {
     let body  = req.body;
@@ -26,7 +31,6 @@ const registerUser = async (req, res) => {
     let body = req.body;
     let email_field = body["email"];
     let pass_field = body["password"];
-    console.log(body);
 
     try {
         const user = await User.register(email_field, pass_field);
