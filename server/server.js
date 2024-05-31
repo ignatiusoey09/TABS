@@ -24,18 +24,14 @@ const userRoutes = require('./routes/user');
 const bookingRoutes = require('./routes/booking');
 
 //middleware
-app.use(cors());
-app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 app.use((req, res, next) => {
     console.log(req.path, req.method);
     next();
 });
 //routes
 app.use("/api/user", upload.none(), userRoutes);
-
-app.use(express.json());
-
-app.use("/api/booking", bookingRoutes);
+app.use("/api/booking", upload.none(), bookingRoutes);
 
 /**
  * RUN WITH CAUTION
