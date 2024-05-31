@@ -1,4 +1,6 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
+const mongoose = require("mongoose");
+
 //TODO: remove username and password from uri before pushing to production
 const uri = "mongodb+srv://tabs_orbital:tempoIsGreat696@cluster0.xcjr2u9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const client = new MongoClient(uri, {
@@ -15,60 +17,25 @@ const multer = require("multer");
 const upload = multer();
 
 const app = express();
-
-
-
 const PORT = 8080;
 
+//importing routes
+const userRoutes = require('./routes/user');
+const bookingRoutes = require('./routes/booking');
+
+//middleware
 app.use(cors());
 app.use(express.urlencoded({extended:true}));
-
-app.post("/api/login", upload.none(), async (req, res) => {
-    let body  = req.body;
-    let email_field = body["email"];
-    let pass_field = body["password"];
-
-    try {
-        await client.connect();
-        const result = await client.db("tabs_main").collection("users")
-            .findOne({email: email_field, password: pass_field});
-        client.close();
-
-        if (result != null) {
-            res.json({login_success: true});
-        } else {
-            res.json({login_success: false});
-        }
-
-    } catch {
-        console.log("error querying database (Login)");
-    }
-})
+app.use((req, res, next) => {
+    console.log(req.path, req.method);
+    next();
+});
+//routes
+app.use("/api/user", upload.none(), userRoutes);
 
 app.use(express.json());
 
-app.post("/api/book", async (req, res) => {
-    let query_date = req.body["date"];
-    console.log(query_date);
-
-    try {
-        await client.connect();
-        const result = await client.db("tabs_main").collection("bookings")
-            .findOne({date: query_date});
-        client.close();
-
-        console.log(result);
-        if (result != null) {
-            console.log("found!");
-            res.json({timeslots: result["slots"]});
-        } else {
-            res.json({timeslots: []});
-        }
-
-    } catch {
-        console.log("error querying database (Booking)")
-    }
-})
+app.use("/api/booking", bookingRoutes);
 
 /**
  * RUN WITH CAUTION
@@ -123,6 +90,11 @@ async function populateMonth() {
 
 //populateMonth();
 
-app.listen(PORT, () => {
-    console.log(`started on port ${PORT}`);
+mongoose.connect(uri, {dbName: "tabs_main"}).then(() => {
+    //listen for requests
+    app.listen(PORT, () => {
+        console.log(`started on port ${PORT}`);
+    });
+}).catch((error) => {
+    console.log(error);
 });

@@ -12,7 +12,7 @@ export default function Home() {
 
     const formData = new FormData(event.currentTarget);
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
+      const response = await fetch('http://localhost:8080/api/user/login', {
         method: "POST",
         //headers: new Headers({'content-type':'multipart/form-data'}),
         body: formData,

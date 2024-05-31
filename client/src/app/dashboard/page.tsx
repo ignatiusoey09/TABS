@@ -22,7 +22,7 @@ export default function Dashboard() {
     const handleQuery = async (date:Value) => {
         const query_date = (date as Date).toDateString();
         try {
-            const response = await fetch("http://localhost:8080/api/book", {
+            const response = await fetch("http://localhost:8080/api/booking/get_date_timeslots", {
                 headers: {'Content-Type': 'application/JSON'},
                 method: "POST",
                 body: JSON.stringify({date: query_date})
@@ -31,7 +31,6 @@ export default function Dashboard() {
             const response_data = await response.json();
             set_timeSlots(response_data["timeslots"]);
 
-            console.log(timeslots);
         } catch {
             console.log("error contacting server");
         }
