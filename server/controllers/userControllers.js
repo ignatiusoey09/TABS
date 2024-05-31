@@ -6,38 +6,37 @@ const createToken = (_id) => {
 }
 
 const loginUser = async (req, res) => {
+    //extracting request body fields
     let body  = req.body;
     let email_field = body["email"];
     let pass_field = body["password"];
 
-    console.log(pass_field);
-
     try {
-        const result = await User.findOne({email: email_field, password: pass_field});
-
-        if (result != null) {
-            res.json({login_success: true});
-        } else {
-            res.json({login_success: false});
-        }
+        //query users collection via User static method
+        const user = await User.login(email_field, pass_field);
+        const token = createToken(user._id);
+        res.status(200).json({user, token});
 
     } catch (e) {
-        console.log("error querying database (User)")
+        //invalid credentials/ non-existent user/ error querying database
         console.log(e);
+        res.status(400).json({error: e.message});
     }
 }
 
 const registerUser = async (req, res) => {
+    //extracting request body fields
     let body = req.body;
     let email_field = body["email"];
     let pass_field = body["password"];
 
     try {
+        //query users collection via User static method
         const user = await User.register(email_field, pass_field);
         res.status(200).json({email: email_field, user: user});
 
     } catch (e) {
-        res.status(400).json({error: "email already in use"});
+        res.status(400).json({error: e.message});
     }
     
 }

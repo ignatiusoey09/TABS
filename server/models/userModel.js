@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 
 const Schema = mongoose.Schema;
 
+//defines a schema for the users collection
 const userSchema = new Schema({
     email: {
         type: String,
@@ -12,9 +13,14 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        required: true
     }
 });
 
+//static method for user registration
 userSchema.statics.register = async function(email_field, password_field) {
 
     //check if email already exists in 'users' collection
@@ -27,7 +33,27 @@ userSchema.statics.register = async function(email_field, password_field) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password_field, salt);
 
-    const user = this.create({email: email_field, password: hash});
+    //adds new document to the users collection
+    const user = this.create({email: email_field, password: hash, role: "student"});
+
+    return user;
+}
+
+//static method for user login
+userSchema.statics.login = async function(email_field, password_field) {
+
+    //check if user exists in database
+    const user = await this.findOne({email: email_field});
+    if (!user) {
+        throw Error("Invalid email or password");
+    }
+
+    //compare the hashes of the input password, and the password found in database
+    const match = await bcrypt.compare(password_field, user.password);
+
+    if (!match) {
+        throw Error("Invalid email or password");
+    }
 
     return user;
 }
