@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useReducer, Dispatch } from "react";
+import { useRouter } from "next/navigation";
+import { createContext, useReducer, Dispatch, useEffect } from "react";
 
 //have to define this interface for some reason idk
 interface IContextProps {
@@ -46,9 +47,21 @@ interface IChildrenProps {
 //the react component that will wrap our entire app in order to provide
 //global context
 export const AuthContextProvider = ({ children }:IChildrenProps) => {
+    const router = useRouter();
     const [state, dispatch] = useReducer(authReducer, {
         user: null,
     });
+
+    useEffect(() => {
+        const retrieve = localStorage.getItem("user");
+
+        if (retrieve) {
+            const user = JSON.parse(retrieve);
+            dispatch({type: 'LOGIN', payload: user});
+            router.push('/dashboard');
+        }
+
+    }, [])
 
     //runs everytime authcontext state changes
     console.log("AuthContext state: ", state);
