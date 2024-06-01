@@ -5,6 +5,7 @@ import TimeslotButton from '../components/timeslot_button';
 import Calendar from 'react-calendar';
 import './Calendar.css';
 import { useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -16,23 +17,35 @@ type T_timeslot = {
 
 export default function Dashboard() {
 
+    //state is a json with 'user' json field
+    const { state } = useAuthContext();
+    const user = state.user;
+
+    console.log(user);
+
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
     const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
 
     const handleQuery = async (date:Value) => {
         const query_date = (date as Date).toDateString();
-        try {
-            const response = await fetch("http://localhost:8080/api/booking/get_date_timeslots", {
-                headers: {'Content-Type': 'application/JSON'},
-                method: "POST",
-                body: JSON.stringify({date: query_date})
-            });
+        if (user) {
+            try {
+                const response = await fetch("http://localhost:8080/api/booking/get_date_timeslots", {
+                    //adding jwt token for api request auth
+                    headers: {
+                        'Content-Type': 'application/JSON',
+                        'Authorization': `Bearer ${user.token}`
+                    },
+                    method: "POST",
+                    body: JSON.stringify({date: query_date})
+                });
 
-            const response_data = await response.json();
-            set_timeSlots(response_data["timeslots"]);
+                const response_data = await response.json();
+                set_timeSlots(response_data["timeslots"]);
 
-        } catch {
-            console.log("error contacting server");
+            } catch {
+                console.log("error contacting server");
+            }
         }
     }
 

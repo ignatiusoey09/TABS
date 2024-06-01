@@ -13,11 +13,17 @@ export const AuthContext = createContext({} as IContextProps);
 //defining type interfaces for reducer function
 interface IAction {
     readonly type: string,
-    readonly payload: JSON | null
+    readonly payload: {
+        user: JSON,
+        token: string
+    } | null
 }
 
 interface IState {
-    user: JSON | null
+    user: {
+        user: JSON,
+        token: string
+    } | null
 }
 
 //reducer function defines how state should be updated based on action
