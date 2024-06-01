@@ -16,10 +16,6 @@ export default function Home() {
 
     const formData = new FormData(event.currentTarget);
     await login(formData);
-    if (state.user) {
-      router.push("/dashboard");
-      router.refresh();
-    }
   }
 
   return (

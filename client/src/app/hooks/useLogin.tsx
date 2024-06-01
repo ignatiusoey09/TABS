@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
+import { useRouter } from "next/navigation";
 
 
 
@@ -9,6 +10,7 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState<boolean | null>(null);
     const [error, setError] = useState<string | null>(null);
     const { dispatch } = useAuthContext();
+    const router = useRouter();
 
     const login = async (formData:FormData) => {
         setIsLoading(true);
@@ -33,6 +35,7 @@ export const useLogin = () => {
 
             dispatch({type: 'LOGIN', payload: res_json});
             setIsLoading(false);
+            router.push("/dashboard");
         }
 
     }
