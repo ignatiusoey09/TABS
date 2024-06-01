@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
@@ -5,16 +7,15 @@ import { useAuthContext } from "./useAuthContext";
 
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState<boolean | null>(null);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const { dispatch } = useAuthContext();
 
     const login = async (formData:FormData) => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch("/api/user/login", {
+        const response = await fetch("http://localhost:8080/api/user/login", {
             method: 'POST',
-            headers: {'Content-Type':'multipart/formdata'},
             body: formData
         });
 
