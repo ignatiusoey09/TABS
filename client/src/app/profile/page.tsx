@@ -1,18 +1,27 @@
 'use client'
 
+import { useRouter } from "next/navigation";
 import Layout from "../components/layout";
 import { useLogout } from "../hooks/useLogout";
-import { useRouter } from "next/navigation";
 
 
 export default function Profile() {
-    const { logout } = useLogout();
     const router = useRouter();
+    const { logout } = useLogout();
 
-    const user = JSON.parse(localStorage.getItem('user') || '{}').user;
+    //retrieve stored user in localstorage
+    const retrieve = localStorage.getItem('user');
+    var user;
+
+    if(!retrieve) {
+        user = {email: "", role: ""};
+    } else {
+        user = JSON.parse(retrieve).user;
+    }
 
     const handleClick = () => {
         logout();
+        //send back to login page
         router.push("/");
     }
 
@@ -29,7 +38,7 @@ export default function Profile() {
                     className="bg-red-200 rounded-lg mt-12"
                     onClick={handleClick}>
                         Logout
-                </button>
+                </button>        
             </div>
         </Layout>
     );
