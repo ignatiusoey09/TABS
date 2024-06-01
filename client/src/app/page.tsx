@@ -1,33 +1,24 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import React, { FormEvent } from "react";
+import React, { FormEvent, useContext } from "react";
+import { useLogin } from "./hooks/useLogin";
+import { AuthContext } from "./context/authContext";
 
 export default function Home() {
   const router = useRouter();
+  const { isLoading, error, login } = useLogin();
+  const { state } = useContext(AuthContext);
 
   //handles login form submission
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    try {
-      const response = await fetch('http://localhost:8080/api/user/login', {
-        method: "POST",
-        //headers: new Headers({'content-type':'multipart/form-data'}),
-        body: formData,
-      });
-
-      const response_data = await response.json();
-      
-      if (response_data['login_success']) {
-        router.push("/dashboard");
-      } else {
-        //popup or alert? what are ways to handle incorrect credentials?
-        console.log("wrong credentials");
-      }
-    } catch {
-      console.log("error handling form");
+    await login(formData);
+    if (state.user) {
+      router.push("/dashboard");
+      router.refresh();
     }
   }
 
@@ -40,6 +31,7 @@ export default function Home() {
       <button className="bg-tembu-lightgreen rounded text-white mt-5" type="submit">
         Login
       </button>
+      {error && <div>{error}</div>}
     </form>
   );
 }
