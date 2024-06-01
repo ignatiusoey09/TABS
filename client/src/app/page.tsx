@@ -1,14 +1,11 @@
 'use client'
 
-import { useRouter } from "next/navigation";
 import React, { FormEvent, useContext } from "react";
 import { useLogin } from "./hooks/useLogin";
-import { AuthContext } from "./context/authContext";
+
 
 export default function Home() {
-  const router = useRouter();
   const { isLoading, error, login } = useLogin();
-  const { state } = useContext(AuthContext);
 
   //handles login form submission
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
