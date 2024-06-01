@@ -3,6 +3,8 @@ const requireAuth = require("../middleware/requireAuth");
 
 const express = require("express");
 const router = express.Router();
+
+//use authorization middleware
 router.use(requireAuth);
 
 //make bookings route
