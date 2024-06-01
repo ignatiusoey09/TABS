@@ -14,8 +14,12 @@ const loginUser = async (req, res) => {
     try {
         //query users collection via User static method
         const user = await User.login(email_field, pass_field);
+
+        //removing password and id for security
+        const user_response = {email:user.email, role:user.role};
         const token = createToken(user._id);
-        res.status(200).json({user, token});
+
+        res.status(200).json({user:user_response, token});
 
     } catch (e) {
         //invalid credentials/ non-existent user/ error querying database
