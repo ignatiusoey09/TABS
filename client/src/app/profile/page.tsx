@@ -9,6 +9,8 @@ export default function Profile() {
     const { logout } = useLogout();
     const router = useRouter();
 
+    const user = JSON.parse(localStorage.getItem('user') || '{}').user;
+
     const handleClick = () => {
         logout();
         router.push("/");
@@ -16,11 +18,19 @@ export default function Profile() {
 
     return (
         <Layout>
-            <button 
-                className="place-self-center justify bg-red-200 rounded-lg" 
-                onClick={handleClick}>
-                    Logout
-            </button>
+            <div className="flex flex-col w-screen grow items-center">
+                <h2 className="mt-12">
+                    {user.email}
+                </h2>
+                <h2>
+                    {user.role}
+                </h2>
+                <button
+                    className="bg-red-200 rounded-lg mt-12"
+                    onClick={handleClick}>
+                        Logout
+                </button>
+            </div>
         </Layout>
     );
 }
