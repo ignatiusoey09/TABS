@@ -21,8 +21,6 @@ export default function Dashboard() {
     const { state } = useAuthContext();
     const user = state.user;
 
-    console.log(user);
-
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
     const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
 
