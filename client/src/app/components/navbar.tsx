@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Dispatch, SetStateAction } from 'react';
+import Link from 'next/link';
 
 import ProfileIcon from 'public/profile_icon.svg';
 import BookingIcon from 'public/booking_icon.svg';
@@ -33,8 +34,12 @@ export default function Navbar({ show, setter } : IProps) {
             <div className= {`flex flex-col fixed h-screen w-4/6 ${transitionClass} ${appendClass} bg-tembu-green z-50`}>
                 <h2 className='basis-1/12 mt-4 text-center text-white text-2xl font-family-metrophobic'>TABS</h2>
                 <div className='flex flex-col basis-7/12 justify-center'>
-                    <NavbarButton icon={ <ProfileIcon height={50} width={50} />} text='Profile'/>
-                    <NavbarButton icon={ <BookingIcon height={50} width={50} />} text='Bookings'/>
+                    <Link href='/profile'>
+                        <NavbarButton icon={ <ProfileIcon height={50} width={50} />} text='Profile'/>
+                    </Link>
+                    <Link href='/dashboard'>
+                        <NavbarButton icon={ <BookingIcon height={50} width={50} />} text='Bookings'/>
+                    </Link>
                     <NavbarButton icon={ <NewsIcon height={50} width={50} />} text='News'/>
                     <NavbarButton icon={ <ReportIcon height={50} width={50} />} text='Report'/>
                 </div>
