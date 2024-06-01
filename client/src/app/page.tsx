@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FormEvent, useContext } from "react";
+import React, { FormEvent } from "react";
 import { useLogin } from "./hooks/useLogin";
 
 
@@ -21,10 +21,11 @@ export default function Home() {
       <h1 className="text-center mt-1 text-title-gray">Tembusu Abbey Booking System</h1>
         <input type="email" name="email" className="mt-16" placeholder="Email:" required/>
         <input type="password" name="password" placeholder="Password:"  required/>
-      <button className="bg-tembu-lightgreen rounded text-white mt-5" type="submit">
+      <button className="bg-tembu-lightgreen rounded text-white mt-5" type="submit" disabled={isLoading}>
         Login
       </button>
       {error && <div>{error}</div>}
+      {isLoading && <div>"loading..."</div>}
     </form>
   );
 }
