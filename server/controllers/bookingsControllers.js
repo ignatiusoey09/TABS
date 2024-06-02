@@ -5,12 +5,6 @@ const getDateTimeslots = async (req, res) => {
     console.log(query_date);
 
     try {
-        /*await client.connect();
-        const result = await client.db("tabs_main").collection("bookings")
-            .findOne({date: query_date});
-        client.close();
-        */
-        
         const result = await Booking.findOne({date: query_date});
         console.log(result);
         if (result != null) {
@@ -30,28 +24,40 @@ const makeBooking = async (req, res) => {
     let query_time = req.body["time"];
 
     try {
-        const timeslot_array = await Booking.findOne({date: query_date});
+        //retrieve booking document
+        const booking = await Booking.findOne({date: query_date});
 
         //occurs if populateMonth function has not been run yet
-        if (timeslot_array == null) {
+        if (booking == null) {
             throw new Error("timeslots not out yet");
         }
 
-        for (ts in timeslot_array) {
+        var found = false;
+
+        for (i = 0; i < booking["slots"].length; i++) {
+            let ts = booking["slots"][i];
             if (ts["time"] == query_time) {
-                if (ts["is_booked"]) {
-                    throw new Error("timeslot already booked");
+                found = true;
+
+                if(ts["is_booked"]) {
+                    throw new Error("This timeslot is already booked");
                 } else {
-                    await Booking.findOneAndUpdate({"slots._id":ts._id}, {$set: {"slots.$.is_booked": true}});
-                    res.status(200).json({status: "successful"});
+                    ts["is_booked"] = true;
+                    await booking.save();
+                    res.status(200).json({status: "success"});
+                    break;
                 }
             }
         }
 
+        if (!found) {
+            throw new Error("Date is populated but invalid query time");
+        }
 
+        
     } catch (e) {
         console.log(e);
-        res.status(400).json({error: e});
+        res.status(400).json({error: e.message});
     }
 }
 
