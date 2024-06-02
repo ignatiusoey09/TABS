@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 
 export const useLogin = () => {
-    const [isLoading, setIsLoading] = useState<boolean | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const { dispatch } = useAuthContext();
     const router = useRouter();
