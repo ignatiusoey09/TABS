@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     } catch {
         const url = process.env.NEXT_PUBLIC_FRONTEND_URL;
-        return NextResponse.redirect("${url}");
+        return NextResponse.redirect(`${url}`);
     }
 }
 
