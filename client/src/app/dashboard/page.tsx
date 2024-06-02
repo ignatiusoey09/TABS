@@ -7,7 +7,6 @@ import { type View } from 'node_modules/react-calendar/dist/esm/shared/types';
 import './Calendar.css';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
-import { error } from 'console';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -18,6 +17,7 @@ type T_timeslot = {
 }
 
 interface IDisableDateArgs {
+    activeStartDate: Date,
     date : Date,
     view: View
 }
@@ -30,6 +30,8 @@ export default function Dashboard() {
 
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
     const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
+
+    console.log(new Date());
 
     const handleQuery = async (date:Value) => {
         const query_date = (date as Date).toDateString();
@@ -59,13 +61,13 @@ export default function Dashboard() {
         handleQuery(date);
     }
 
-    const disableDates = ({date, view} : IDisableDateArgs ) => {
+    const disableDates = ({date} : IDisableDateArgs ) => {
         //only enable bookings from today till the end of next month
         var d = new Date();
         d.setDate(1);
-        const today = new Date();
         const nextMonth = new Date(d.getFullYear(), d.getMonth() + 2, d.getDate());
-        if (date >= today && date < nextMonth) {
+
+        if (date < nextMonth) {
             return false;
         }
         return true;
@@ -90,18 +92,17 @@ export default function Dashboard() {
                     onChange={handleChange}
                     next2Label={null}
                     prev2Label={null}
+                    minDate={new Date()}
                     tileDisabled={disableDates}
                 />
             </div>
             <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
                 {
-                    timeslots.map((x, i) => <TimeslotButton key={i} timeslot={x}/>)
+                    timeslots.map((x, i) => <TimeslotButton key={i} timeslot={x} date={calendarValue as Date}/>)
                 }
             </div>
         </>
     );
-
-    
 
     return (
         <Layout children={<Child />} />
