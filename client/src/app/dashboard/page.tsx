@@ -7,6 +7,7 @@ import { type View } from 'node_modules/react-calendar/dist/esm/shared/types';
 import './Calendar.css';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { MoonLoader } from 'react-spinners';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -26,6 +27,7 @@ export default function Dashboard() {
 
     //state is a json with 'user' json field
     const { state } = useAuthContext();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const user = state.user;
 
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
@@ -34,6 +36,7 @@ export default function Dashboard() {
     console.log(new Date());
 
     const handleQuery = async (date:Value) => {
+        setIsLoading(true);
         const query_date = (date as Date).toDateString();
         if (user) {
             try {
@@ -54,6 +57,7 @@ export default function Dashboard() {
                 console.log("error contacting server");
             }
         }
+        setIsLoading(false);
     }
 
     const handleChange = async (date:Value) => {
@@ -96,11 +100,13 @@ export default function Dashboard() {
                     tileDisabled={disableDates}
                 />
             </div>
-            <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
+            {!isLoading && <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
                 {
                     timeslots.map((x, i) => <TimeslotButton key={i} timeslot={x} date={calendarValue as Date}/>)
                 }
-            </div>
+            </div>}
+
+            <MoonLoader className="place-self-center mt-40" loading={isLoading} />
         </>
     );
 
