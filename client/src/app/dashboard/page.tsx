@@ -3,6 +3,7 @@
 import Layout from '../components/layout';
 import TimeslotButton from '../components/timeslot_button';
 import Calendar from 'react-calendar';
+import { type View } from 'node_modules/react-calendar/dist/esm/shared/types';
 import './Calendar.css';
 import { useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -13,6 +14,11 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 type T_timeslot = {
     time: string,
     is_booked: boolean
+}
+
+interface IDisableDateArgs {
+    date : Date,
+    view: View
 }
 
 export default function Dashboard() {
@@ -52,6 +58,18 @@ export default function Dashboard() {
         handleQuery(date);
     }
 
+    const disableDates = ({date, view} : IDisableDateArgs ) => {
+        //only enable bookings from today till the end of next month
+        var d = new Date();
+        d.setDate(1);
+        const today = new Date();
+        const nextMonth = new Date(d.getFullYear(), d.getMonth() + 2, d.getDate());
+        if (date >= today && date < nextMonth) {
+            return false;
+        }
+        return true;
+    }
+
     const Child = () => (
         <>
             <div className='w-[90%] h-[50%] self-center'>
@@ -62,6 +80,7 @@ export default function Dashboard() {
                     onChange={handleChange}
                     next2Label={null}
                     prev2Label={null}
+                    tileDisabled={disableDates}
                 />
             </div>
             <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
