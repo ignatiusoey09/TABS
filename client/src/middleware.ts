@@ -1,8 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-    console.log("runs");
-
     try {
         const requestURL = new URL(request.url);
         const referrerURL = new URL(request.headers.get("referer") || "");
