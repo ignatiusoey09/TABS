@@ -2,6 +2,7 @@
 
 import React, { FormEvent } from "react";
 import { useLogin } from "./hooks/useLogin";
+import { SpinnerCircular } from "spinners-react";
 
 
 export default function Home() {
@@ -15,17 +16,25 @@ export default function Home() {
     await login(formData);
   }
 
+  const styling = error ? "border-2 border-red-400" : "border-1";
+
   return (
     <form id = "main" onSubmit={ handleSubmit }>
       <h2 className="text-center text-6xl text-title-gray">TABS</h2>
       <h1 className="text-center mt-1 text-title-gray">Tembusu Abbey Booking System</h1>
-        <input type="email" name="email" className="mt-16" placeholder="Email:" required/>
-        <input type="password" name="password" placeholder="Password:"  required/>
-      <button className="bg-tembu-lightgreen rounded text-white mt-5" type="submit" disabled={isLoading}>
+        <div className="flex flex-col items-center gap-y-3 mt-8 w-full">
+          {error && <h3 className="text-red-400 ">{error}</h3>}
+          <input type="email" name="email" className={styling} placeholder="Email:" required/>
+          <input type="password" name="password" className={styling} placeholder="Password:"  required/>
+        </div>
+      <button 
+        className="bg-tembu-lightgreen rounded text-white mt-5 disabled:bg-gray-300" 
+        type="submit" 
+        disabled={isLoading}
+      >
         Login
       </button>
-      {error && <div>{error}</div>}
-      {isLoading && <div>"loading..."</div>}
+      <SpinnerCircular enabled={isLoading}/>
     </form>
   );
 }
