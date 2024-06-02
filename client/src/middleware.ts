@@ -11,7 +11,8 @@ export function middleware(request: NextRequest) {
 
         return NextResponse.next();
     } catch {
-        return NextResponse.redirect("http://localhost:3000/");
+        const url = process.env.NEXT_PUBLIC_FRONTEND_URL;
+        return NextResponse.redirect("${url}");
     }
 }
 
