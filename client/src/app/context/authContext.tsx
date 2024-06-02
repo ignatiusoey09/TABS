@@ -15,14 +15,20 @@ export const AuthContext = createContext({} as IContextProps);
 interface IAction {
     readonly type: string,
     readonly payload: {
-        user: JSON,
+        user: {
+            email: string,
+            role: string,
+        },
         token: string
     } | null
 }
 
 interface IState {
     user: {
-        user: JSON,
+        user: {
+            email: string,
+            role: string,
+        }
         token: string
     } | null
 }

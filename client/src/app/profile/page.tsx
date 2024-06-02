@@ -3,25 +3,22 @@
 import { useRouter } from "next/navigation";
 import Layout from "../components/layout";
 import { useLogout } from "../hooks/useLogout";
-import { useEffect } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 
 export default function Profile() {
     const router = useRouter();
     const { logout } = useLogout();
+    const { state } = useAuthContext();
 
     //retrieve stored user in localstorage
-    var retrieve;
-    useEffect(() => {
-        retrieve = localStorage.getItem('user');
-    }, [])
-    
-    var user;
+    const retrieve = state.user;
 
-    if(!retrieve) {
-        user = {email: "", role: ""};
+    var user;
+    if (retrieve) {
+        user = retrieve.user;
     } else {
-        user = JSON.parse(retrieve).user;
+        user = {email:"", role:""};
     }
 
     const handleClick = () => {

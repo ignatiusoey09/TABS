@@ -38,9 +38,10 @@ export default function Dashboard() {
     const handleQuery = async (date:Value) => {
         setIsLoading(true);
         const query_date = (date as Date).toDateString();
+        const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
         if (user) {
             try {
-                const response = await fetch("http://localhost:8080/api/booking/get_date_timeslots", {
+                const response = await fetch(`${backend_url}/api/booking/get_date_timeslots`, {
                     //adding jwt token for api request auth
                     headers: {
                         'Content-Type': 'application/JSON',

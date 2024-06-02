@@ -16,7 +16,9 @@ export const useLogin = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch("http://localhost:8080/api/user/login", {
+        const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+        const response = await fetch(`${backend_url}/api/user/login`, {
             method: 'POST',
             body: formData
         });
