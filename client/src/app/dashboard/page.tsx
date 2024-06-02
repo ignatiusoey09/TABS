@@ -5,8 +5,9 @@ import TimeslotButton from '../components/timeslot_button';
 import Calendar from 'react-calendar';
 import { type View } from 'node_modules/react-calendar/dist/esm/shared/types';
 import './Calendar.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { error } from 'console';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -69,6 +70,15 @@ export default function Dashboard() {
         }
         return true;
     }
+
+    //handles querying before initial render, using today's date
+    useEffect(() => {
+        const fetchData = async () => {
+            await handleQuery(calendarValue);
+        }
+
+        fetchData().catch(console.error);
+    }, []);
 
     const Child = () => (
         <>
