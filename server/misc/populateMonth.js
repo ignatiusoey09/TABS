@@ -1,7 +1,8 @@
 const Booking = require("../models/bookingModel");
 
 async function populateMonth() {
-    //desgining a function to populate the mongodb bookings table
+    //designing a function to populate the mongo bookings collection
+    //intent is to schedule this functione every month
 
     var today = new Date();
     var currMonth = today.getMonth();
@@ -10,7 +11,7 @@ async function populateMonth() {
     //there is some time conversion shenanigans here as the date gets converted to UTC
     //instead of local and i cant find a good way to stop that
     const startOfMonth = new Date(currYear, currMonth, 1);
-    const endOfMonth = new Date(currYear, currMonth + 1, 0);
+    const endOfMonth = new Date(currYear, currMonth + 2, 0);
     
     try {
         var d = startOfMonth;
@@ -18,7 +19,6 @@ async function populateMonth() {
 
         while (d <= endOfMonth) {
             dateString = d.toDateString();
-            console.log(dateString);
 
             const doc = {
                 date: dateString,
@@ -39,6 +39,7 @@ async function populateMonth() {
         }
 
         await Booking.insertMany(documentsArr);
+        console.log("Collection succesfully populated");
 
     } catch (e) {
         console.log(e);
