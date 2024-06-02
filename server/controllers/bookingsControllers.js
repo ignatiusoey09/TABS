@@ -5,14 +5,7 @@ const getDateTimeslots = async (req, res) => {
     console.log(query_date);
 
     try {
-        /*await client.connect();
-        const result = await client.db("tabs_main").collection("bookings")
-            .findOne({date: query_date});
-        client.close();
-        */
-        
         const result = await Booking.findOne({date: query_date});
-        console.log(result);
         if (result != null) {
             res.json({timeslots: result["slots"]});
         } else {
@@ -25,4 +18,46 @@ const getDateTimeslots = async (req, res) => {
     }
 }
 
-module.exports = { getDateTimeslots, };
+const makeBooking = async (req, res) => {
+    let query_date = req.body["date"];
+    let query_time = req.body["time"];
+
+    try {
+        //retrieve booking document
+        const booking = await Booking.findOne({date: query_date});
+
+        //occurs if populateMonth function has not been run yet
+        if (booking == null) {
+            throw new Error("timeslots not out yet");
+        }
+
+        var found = false;
+
+        for (i = 0; i < booking["slots"].length; i++) {
+            let ts = booking["slots"][i];
+            if (ts["time"] == query_time) {
+                found = true;
+
+                if(ts["is_booked"]) {
+                    throw new Error("This timeslot is already booked");
+                } else {
+                    ts["is_booked"] = true;
+                    await booking.save();
+                    res.status(200).json({status: "success"});
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            throw new Error("Date is populated but invalid query time");
+        }
+
+        
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({error: e.message});
+    }
+}
+
+module.exports = { getDateTimeslots, makeBooking };

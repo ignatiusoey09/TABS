@@ -2,7 +2,7 @@
 
 import React, { FormEvent } from "react";
 import { useLogin } from "./hooks/useLogin";
-import { SpinnerCircular } from "spinners-react";
+import MoonLoader from "react-spinners/MoonLoader";
 
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
       >
         Login
       </button>
-      <SpinnerCircular enabled={isLoading}/>
+      <MoonLoader loading={isLoading} />
     </form>
   );
 }
