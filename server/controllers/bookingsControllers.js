@@ -6,7 +6,6 @@ const getDateTimeslots = async (req, res) => {
 
     try {
         const result = await Booking.findOne({date: query_date});
-        console.log(result);
         if (result != null) {
             res.json({timeslots: result["slots"]});
         } else {
