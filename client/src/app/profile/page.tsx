@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import Layout from "../components/layout";
 import { useLogout } from "../hooks/useLogout";
+import { useEffect } from "react";
 
 
 export default function Profile() {
@@ -10,7 +11,11 @@ export default function Profile() {
     const { logout } = useLogout();
 
     //retrieve stored user in localstorage
-    const retrieve = localStorage.getItem('user');
+    var retrieve;
+    useEffect(() => {
+        retrieve = localStorage.getItem('user');
+    }, [])
+    
     var user;
 
     if(!retrieve) {
