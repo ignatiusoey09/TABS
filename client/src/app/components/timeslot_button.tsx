@@ -46,9 +46,7 @@ export default function TimeslotButton({timeslot, date}: IProps) {
 
             const res_json = await response.json();
             console.log(res_json);
-            router.push("/dashboard");
-            router.refresh();
-
+            router.replace("/dashboard");
         } catch (e) {
             console.log(e);
         }

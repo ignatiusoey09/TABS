@@ -59,6 +59,7 @@ export const AuthContextProvider = ({ children }:IChildrenProps) => {
     });
 
     useEffect(() => {
+        console.log("retrieved user");
         const retrieve = localStorage.getItem("user");
 
         if (retrieve) {

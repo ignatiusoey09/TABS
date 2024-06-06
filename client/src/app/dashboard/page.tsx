@@ -26,23 +26,21 @@ interface IDisableDateArgs {
 export default function Dashboard() {
 
     //setting up hooks
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
+    const [calendarValue, setCalendarValue] = useState<Value>(new Date());
     const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
-    const getTimeslots = useGetTimeslots();
+    const { getTimeslots, isLoading, setIsLoading } = useGetTimeslots();
 
     //handles querying database
     const handleQuery = async (date:Value) => {
-        setIsLoading(true);
+        console.log("date " + date);
         const data = await getTimeslots(date as Date);
+        console.log("data " + data);
         set_timeSlots(data);
-        setIsLoading(false);
     }
 
     //handles user selecting new calendar date
     const handleChange = async (date:Value) => {
-        onChange_calendarValue(date);
-        handleQuery(date);
+        setCalendarValue(date);
     }
 
     //handles disabling calendar dates
@@ -58,14 +56,15 @@ export default function Dashboard() {
         return true;
     }
 
-    //executes before initial page render, fetch timeslots for today's date
+    //executes before initial page render, and everytime calendarValue changes
     useEffect(() => {
+        console.log("called");
         const fetchData = async () => {
             await handleQuery(calendarValue);
         }
 
         fetchData().catch(console.error);
-    }, []);
+    }, [calendarValue]);
 
     const Child = () => (
         <>
@@ -81,7 +80,7 @@ export default function Dashboard() {
                     tileDisabled={disableDates}
                 />
             </div>
-            {!isLoading && <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
+            {!isLoading  && <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
                 {
                     timeslots.map((x, i) => <TimeslotButton key={i} timeslot={x} date={calendarValue as Date}/>)
                 }
