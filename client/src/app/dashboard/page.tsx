@@ -6,8 +6,7 @@ import Calendar from 'react-calendar';
 import { type View } from 'node_modules/react-calendar/dist/esm/shared/types';
 import './Calendar.css';
 import { useEffect, useState } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { useLogout } from '../hooks/useLogout';
+import { useGetTimeslots } from '../hooks/useGetDateTimeslots';
 import { MoonLoader } from 'react-spinners';
 
 type ValuePiece = Date | null;
@@ -26,54 +25,27 @@ interface IDisableDateArgs {
 
 export default function Dashboard() {
 
-    //state is a json with 'user' json field
-    const { state } = useAuthContext();
-    const user = state.user;
-
-    const { logout } = useLogout();
+    //setting up hooks
     const [isLoading, setIsLoading] = useState<boolean>(false);
-   
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
     const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
+    const getTimeslots = useGetTimeslots();
 
+    //handles querying database
     const handleQuery = async (date:Value) => {
         setIsLoading(true);
-        const query_date = (date as Date).toDateString();
-        const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
-        if (user) {
-            try {
-                const response = await fetch(`${backend_url}/api/booking/get_date_timeslots`, {
-                    //adding jwt token for api request auth
-                    headers: {
-                        'Content-Type': 'application/JSON',
-                        'Authorization': `Bearer ${user.token}`
-                    },
-                    method: "POST",
-                    body: JSON.stringify({date: query_date})
-                });
-
-                const response_data = await response.json();
-                if (!response.ok) {
-                    if (response_data.error == "Token Expired") {
-                        localStorage.removeItem("user");
-                        console.log("Token expired");
-                        logout();
-                    }
-                } else {
-                    set_timeSlots(response_data["timeslots"]);
-                }
-            } catch {
-                console.log("error contacting server");
-            }
-        }
+        const data = await getTimeslots(date as Date);
+        set_timeSlots(data);
         setIsLoading(false);
     }
 
+    //handles user selecting new calendar date
     const handleChange = async (date:Value) => {
         onChange_calendarValue(date);
         handleQuery(date);
     }
 
+    //handles disabling calendar dates
     const disableDates = ({date} : IDisableDateArgs ) => {
         //only enable bookings from today till the end of next month
         var d = new Date();
