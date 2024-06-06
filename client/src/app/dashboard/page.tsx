@@ -58,7 +58,7 @@ export default function Dashboard() {
         return true;
     }
 
-    //handles querying before initial render, using today's date
+    //executes before initial page render, fetch timeslots for today's date
     useEffect(() => {
         const fetchData = async () => {
             await handleQuery(calendarValue);
