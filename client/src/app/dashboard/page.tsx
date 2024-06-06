@@ -7,6 +7,7 @@ import { type View } from 'node_modules/react-calendar/dist/esm/shared/types';
 import './Calendar.css';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useLogout } from '../hooks/useLogout';
 import { MoonLoader } from 'react-spinners';
 
 type ValuePiece = Date | null;
@@ -27,13 +28,13 @@ export default function Dashboard() {
 
     //state is a json with 'user' json field
     const { state } = useAuthContext();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const user = state.user;
 
+    const { logout } = useLogout();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+   
     const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
     const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
-
-    console.log(new Date());
 
     const handleQuery = async (date:Value) => {
         setIsLoading(true);
@@ -52,8 +53,15 @@ export default function Dashboard() {
                 });
 
                 const response_data = await response.json();
-                set_timeSlots(response_data["timeslots"]);
-
+                if (!response.ok) {
+                    if (response_data.error == "Token Expired") {
+                        localStorage.removeItem("user");
+                        console.log("Token expired");
+                        logout();
+                    }
+                } else {
+                    set_timeSlots(response_data["timeslots"]);
+                }
             } catch {
                 console.log("error contacting server");
             }
