@@ -10,10 +10,10 @@ export const useGetTimeslots = () => {
 
     const { logout } = useLogout();
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, set_isLoading] = useState<boolean>(true);
    
     const getTimeslots = async (date:Date) => {
-        setIsLoading(true);
+        set_isLoading(true);
         const query_date = (date as Date).toDateString();
         const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
         if (user) {
@@ -29,7 +29,6 @@ export const useGetTimeslots = () => {
                 });
 
                 const response_data = await response.json();
-                setIsLoading(false);
                 if (!response.ok) {
                     if (response_data.error == "Token Expired") {
                         localStorage.removeItem("user");
@@ -37,7 +36,7 @@ export const useGetTimeslots = () => {
                         logout();
                     }
                 } else {
-                    console.log(response_data["timeslots"]);
+                    set_isLoading(false);
                     return response_data["timeslots"];
                 }
             } catch {
@@ -46,10 +45,11 @@ export const useGetTimeslots = () => {
             }
         } else {
             //not logged in
+            set_isLoading(false);
             console.log("not logged in");
             router.replace("/");
             return [];
         }
     }
-    return { getTimeslots, isLoading, setIsLoading};
+    return { getTimeslots, isLoading };
 }
