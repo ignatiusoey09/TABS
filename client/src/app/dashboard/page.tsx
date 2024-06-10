@@ -8,6 +8,7 @@ import './Calendar.css';
 import { useEffect, useState } from 'react';
 import { useGetTimeslots } from '../hooks/useGetDateTimeslots';
 import { MoonLoader } from 'react-spinners';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -27,14 +28,14 @@ export default function Dashboard() {
 
     //setting up hooks
     const [calendarValue, setCalendarValue] = useState<Value>(new Date());
-    const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
-    const { getTimeslots, isLoading, setIsLoading } = useGetTimeslots();
+    const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([{time:"smthing", is_booked:false}]);
+    const { getTimeslots, isLoading } = useGetTimeslots();
+    const { state }  = useAuthContext();
+    const user = state["user"];
 
     //handles querying database
     const handleQuery = async (date:Value) => {
-        console.log("date " + date);
         const data = await getTimeslots(date as Date);
-        console.log("data " + data);
         set_timeSlots(data);
     }
 
@@ -58,13 +59,12 @@ export default function Dashboard() {
 
     //executes before initial page render, and everytime calendarValue changes
     useEffect(() => {
-        console.log("called");
         const fetchData = async () => {
             await handleQuery(calendarValue);
         }
 
         fetchData().catch(console.error);
-    }, [calendarValue]);
+    }, [calendarValue, user]);
 
     const Child = () => (
         <>
