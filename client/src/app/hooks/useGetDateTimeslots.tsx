@@ -34,8 +34,10 @@ export const useGetTimeslots = () => {
                         localStorage.removeItem("user");
                         console.log("Token expired");
                         logout();
+                        return [{test: "something"}];
                     }
                 } else {
+                    //status 200
                     set_isLoading(false);
                     return response_data["timeslots"];
                 }
@@ -48,7 +50,7 @@ export const useGetTimeslots = () => {
             set_isLoading(false);
             console.log("not logged in");
             router.replace("/");
-            return [];
+            return [{time: "asdf", is_booked: false}];
         }
     }
     return { getTimeslots, isLoading };
