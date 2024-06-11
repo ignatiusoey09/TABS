@@ -1,9 +1,9 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import Layout from "../components/layout";
-import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
+import Layout from "../../components/layout";
+import { useLogout } from "../../hooks/useLogout";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 
 export default function Profile() {
@@ -30,6 +30,7 @@ export default function Profile() {
     return (
         <Layout>
             <div className="flex flex-col w-screen grow items-center">
+                <h1>STUDENT PAGE</h1>
                 <h2 className="mt-12">
                     {user.email}
                 </h2>
