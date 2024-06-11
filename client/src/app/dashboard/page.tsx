@@ -6,8 +6,9 @@ import Calendar from 'react-calendar';
 import { type View } from 'node_modules/react-calendar/dist/esm/shared/types';
 import './Calendar.css';
 import { useEffect, useState } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useGetTimeslots } from '../hooks/useGetDateTimeslots';
 import { MoonLoader } from 'react-spinners';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -25,47 +26,25 @@ interface IDisableDateArgs {
 
 export default function Dashboard() {
 
-    //state is a json with 'user' json field
-    const { state } = useAuthContext();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const user = state.user;
+    //setting up hooks
+    const [calendarValue, setCalendarValue] = useState<Value>(new Date());
+    const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([{time:"smthing", is_booked:false}]);
+    const { getTimeslots, isLoading } = useGetTimeslots();
+    const { state }  = useAuthContext();
+    const user = state["user"];
 
-    const [calendarValue, onChange_calendarValue] = useState<Value>(new Date());
-    const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([]); 
-
-    console.log(new Date());
-
+    //handles querying database
     const handleQuery = async (date:Value) => {
-        setIsLoading(true);
-        const query_date = (date as Date).toDateString();
-        const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
-        if (user) {
-            try {
-                const response = await fetch(`${backend_url}/api/booking/get_date_timeslots`, {
-                    //adding jwt token for api request auth
-                    headers: {
-                        'Content-Type': 'application/JSON',
-                        'Authorization': `Bearer ${user.token}`
-                    },
-                    method: "POST",
-                    body: JSON.stringify({date: query_date})
-                });
-
-                const response_data = await response.json();
-                set_timeSlots(response_data["timeslots"]);
-
-            } catch {
-                console.log("error contacting server");
-            }
-        }
-        setIsLoading(false);
+        const data = await getTimeslots(date as Date);
+        set_timeSlots(data);
     }
 
+    //handles user selecting new calendar date
     const handleChange = async (date:Value) => {
-        onChange_calendarValue(date);
-        handleQuery(date);
+        setCalendarValue(date);
     }
 
+    //handles disabling calendar dates
     const disableDates = ({date} : IDisableDateArgs ) => {
         //only enable bookings from today till the end of next month
         var d = new Date();
@@ -78,14 +57,14 @@ export default function Dashboard() {
         return true;
     }
 
-    //handles querying before initial render, using today's date
+    //executes before initial page render, and everytime calendarValue changes
     useEffect(() => {
         const fetchData = async () => {
             await handleQuery(calendarValue);
         }
 
         fetchData().catch(console.error);
-    }, []);
+    }, [calendarValue, user]);
 
     const Child = () => (
         <>
@@ -101,7 +80,7 @@ export default function Dashboard() {
                     tileDisabled={disableDates}
                 />
             </div>
-            {!isLoading && <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
+            {!isLoading  && <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
                 {
                     timeslots.map((x, i) => <TimeslotButton key={i} timeslot={x} date={calendarValue as Date}/>)
                 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import { createContext, useReducer, Dispatch, useEffect } from "react";
 
@@ -59,12 +60,26 @@ export const AuthContextProvider = ({ children }:IChildrenProps) => {
     });
 
     useEffect(() => {
+        console.log("retrieved user");
         const retrieve = localStorage.getItem("user");
 
         if (retrieve) {
             const user = JSON.parse(retrieve);
-            dispatch({type: 'LOGIN', payload: user});
-            router.push('/dashboard');
+
+            //check if token expiry
+            const token = user.token;
+            const exp = jwtDecode(token).exp!;
+            const now = new Date();
+            const TWO_HOURS = 2 * 60 * 60 * 1000; //in ms
+            if (exp - now.valueOf() < TWO_HOURS) {
+                // jwt expired, or will expire within 2 hr
+                console.log("redirected");
+                localStorage.clear();
+                router.replace("/");
+            } else {
+                dispatch({type: 'LOGIN', payload: user});
+                router.push('/dashboard');
+            }
         }
 
     }, [])

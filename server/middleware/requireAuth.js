@@ -20,7 +20,11 @@ const requireAuth = async (req, res, next) => {
         next();
     } catch (e) {
         console.log(e);
-        res.status(401).json({error: "Access Denied"});
+        if (e.name == "TokenExpiredError") {
+            res.status(401).json({error: "Token Expired"});
+        } else {
+            res.status(401).json({error: "Access Denied"});
+        }
     }
 }
 
