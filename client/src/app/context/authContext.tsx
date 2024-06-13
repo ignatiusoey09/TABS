@@ -18,6 +18,7 @@ interface IAction {
     readonly payload: {
         user: {
             email: string,
+            name: string,
             role: string,
         },
         token: string
@@ -28,6 +29,7 @@ interface IState {
     user: {
         user: {
             email: string,
+            name: string,
             role: string,
         }
         token: string

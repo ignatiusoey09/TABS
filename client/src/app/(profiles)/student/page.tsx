@@ -18,7 +18,7 @@ export default function Profile() {
     if (retrieve) {
         user = retrieve.user;
     } else {
-        user = {email:"", role:""};
+        user = {email:"", name: "", role:"",};
     }
 
     const handleClick = () => {
@@ -36,6 +36,9 @@ export default function Profile() {
                 </h2>
                 <h2>
                     {user.role}
+                </h2>
+                <h2>
+                    {user.name}
                 </h2>
                 <button
                     className="bg-red-200 rounded-lg mt-12"

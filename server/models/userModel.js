@@ -10,6 +10,11 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
     password: {
         type: String,
         required: true
@@ -21,7 +26,7 @@ const userSchema = new Schema({
 });
 
 //static method for user registration
-userSchema.statics.register = async function(email_field, password_field) {
+userSchema.statics.register = async function(email_field, password_field, name_field) {
 
     //check if email already exists in 'users' collection
     const exists = await this.findOne({email: email_field});
@@ -34,7 +39,7 @@ userSchema.statics.register = async function(email_field, password_field) {
     const hash = await bcrypt.hash(password_field, salt);
 
     //adds new document to the users collection
-    const user = this.create({email: email_field, password: hash, role: "student"});
+    const user = this.create({email: email_field, name: name_field, password: hash, role: "student"});
 
     return user;
 }
