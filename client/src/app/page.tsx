@@ -17,7 +17,12 @@ export default function Home() {
     await login(formData);
   }
 
+  //styling input boxes when error occurs
   const styling = error ? "border-2 border-red-400" : "border-1";
+
+  //styling for form element
+  const form_style_lg = "lg:grow-0 lg:mt-[10%] lg:items-start lg:w-[600px]";
+  const form_style = `grow flex flex-col mt-[60%] items-center ${form_style_lg}`;
 
   return (
     <div className="flex flex-row">
@@ -31,13 +36,12 @@ export default function Home() {
             <input type="password" name="password" className={styling} placeholder="Password:"  required/>
           </div>
         <button
-          className="bg-tembu-lightgreen rounded text-white mt-10 w-[60%] lg:w-[70%] disabled:bg-gray-300"
+          className={`${isLoading ? 'hidden' : 'visible'} bg-tembu-lightgreen rounded text-white mt-10 w-[60%] lg:w-[70%]`}
           type="submit"
-          disabled={isLoading}
         >
           Login
         </button>
-        <MoonLoader loading={isLoading} />
+        <MoonLoader className="mt-8 lg:mx-32" loading={isLoading} />
       </form>
     </div>
   );
