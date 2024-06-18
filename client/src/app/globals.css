@@ -6,14 +6,6 @@
     font-family: Metrophobic;
 }
 
-#main {
-    background-color: white;
-    display: inline-grid;
-    grid-row-gap: 1em;
-    margin-top: 50%;
-    justify-items: center;
-    width: 100%;
-}
 
 input {
     border: solid;
@@ -21,13 +13,10 @@ input {
     border-color: gray;
     border-radius: 4px;
     width: 70%;
-    justify-self: center;
     padding: 5px;
 }
 
 
 button {
-    justify-self: center;
-    width: 60%;
     height: 32px;
 }
