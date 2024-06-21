@@ -38,7 +38,7 @@ export default function Home() {
             <input type="password" name="password" className={input_style} placeholder="Password:"  required/>
           </div>
         <button
-          className={`${isLoading ? 'hidden' : 'visible'} bg-tembu-lightgreen rounded text-white mt-10 w-[60%] lg:w-[70%]`}
+          className={`${isLoading ? 'hidden' : 'visible'} bg-tembu-lightgreen rounded text-white mt-10 w-[60%] lg:w-full`}
           type="submit"
         >
           Login
