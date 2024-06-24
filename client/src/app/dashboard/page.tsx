@@ -68,7 +68,7 @@ export default function Dashboard() {
 
     const Child = () => (
         <>
-            <div className='w-[80%] h-[80%] self-center lg:h-[60%]'>
+            <div className='w-[90%] h-[50%] self-center'>
                 <Calendar 
                     calendarType='gregory' 
                     formatShortWeekday={(locale, date) => [ `S`, `M`, `T`, `W`, `T`, `F`, `S` ][date.getDay()]}
@@ -80,7 +80,7 @@ export default function Dashboard() {
                     tileDisabled={disableDates}
                 />
             </div>
-            {!isLoading  && <div className='border-2 mt-6 pt-4 h-full grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
+            {!isLoading  && <div className='border-2 mt-6 grow grid grid-cols-2 grid-rows-4 grid-flow-col place-items-center'>
                 {
                     timeslots.map((x, i) => <TimeslotButton key={i} timeslot={x} date={calendarValue as Date}/>)
                 }

@@ -19,7 +19,7 @@ interface IProps {
 
 export default function Navbar({ show, setter } : IProps) {
 
-    const appendClass = show ? "ml-0" : "-ml-[500px] lg:-ml-[1000px]";
+    const appendClass = show ? "ml-0" : "-ml-[500px]";
     const transitionClass = "transition-[margin-left] ease-in-out duration-500";
 
     const ModalOverlay = () => (
@@ -31,7 +31,7 @@ export default function Navbar({ show, setter } : IProps) {
     );
     return (
         <>
-            <div className= {`flex flex-col fixed h-screen w-4/6 ${transitionClass} ${appendClass} bg-tembu-green z-50 lg:hidden`}>
+            <div className= {`flex flex-col fixed h-screen w-4/6 ${transitionClass} ${appendClass} bg-tembu-green z-50`}>
                 <h2 className='basis-1/12 mt-4 text-center text-white text-2xl font-family-metrophobic'>TABS</h2>
                 <div className='flex flex-col basis-7/12 justify-center'>
                     <Link href='/profile'>
