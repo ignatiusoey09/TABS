@@ -58,7 +58,7 @@ export default function TimeslotButton({timeslot, date}: IProps) {
 
     return (
         <button 
-            className="border-2 rounded-md w-[80%] h-[80%] disabled:bg-zinc-50 disabled:text-zinc-300" 
+            className="border-2 rounded-md w-[90%] h-[60%] lg:w-[70%] h-[83%] disabled:bg-zinc-50 disabled:text-zinc-300" 
             disabled={is_booked}
             onClick={handleClick}
         >
