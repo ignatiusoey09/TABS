@@ -1,9 +1,9 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import Layout from "../components/layout";
-import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
+import Layout from "../../components/layout";
+import { useLogout } from "../../hooks/useLogout";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 
 export default function Profile() {
@@ -18,7 +18,7 @@ export default function Profile() {
     if (retrieve) {
         user = retrieve.user;
     } else {
-        user = {email:"", role:""};
+        user = {email:"", name: "", role:"",};
     }
 
     const handleClick = () => {
@@ -27,17 +27,23 @@ export default function Profile() {
         router.push("/");
     }
 
+    /**
+     * TODO: implement "my bookings" listings feature  
+     */
+
     return (
         <Layout>
-            <div className="flex flex-col w-screen grow items-center">
-                <h2 className="mt-12">
-                    {user.email}
-                </h2>
-                <h2>
-                    {user.role}
-                </h2>
+            <div className="flex flex-col w-screen grow p-6">
+                <div>
+                    <h2 className="text-3xl">
+                        {user.name}
+                    </h2>
+                    <h2 className="text-gray-600">
+                        {user.email}
+                    </h2>
+                </div>
                 <button
-                    className="bg-red-200 rounded-lg mt-12"
+                    className="mt-auto self-center text-xl text-red-600"
                     onClick={handleClick}>
                         Logout
                 </button>        

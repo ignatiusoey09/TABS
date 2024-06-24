@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
         const user = await User.login(email_field, pass_field);
 
         //removing password and id for security
-        const user_response = {email:user.email, role:user.role};
+        const user_response = {email:user.email, name: user.name, role:user.role};
         const token = createToken(user._id);
 
         res.status(200).json({user:user_response, token});
@@ -33,10 +33,11 @@ const registerUser = async (req, res) => {
     let body = req.body;
     let email_field = body["email"];
     let pass_field = body["password"];
+    let name_field = body["name"];
 
     try {
         //query users collection via User static method
-        const user = await User.register(email_field, pass_field);
+        const user = await User.register(email_field, pass_field, name_field);
         res.status(200).json({email: email_field, user: user});
 
     } catch (e) {
