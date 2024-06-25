@@ -33,7 +33,7 @@ export default function Profile() {
 
     return (
         <Layout>
-            <div className="flex flex-col w-screen grow p-6">
+            <div className="flex flex-col w-full grow p-6">
                 <div>
                     <h2 className="text-3xl">
                         {user.name}
