@@ -86,7 +86,7 @@ export default function Dashboard() {
                 }
             </div>}
 
-            <MoonLoader className="place-self-center mt-40" loading={isLoading} />
+                <MoonLoader className="place-self-center mt-40" loading={isLoading} />
         </>
     );
 
