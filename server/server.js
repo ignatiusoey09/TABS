@@ -14,6 +14,7 @@ const app = express();
 //importing routes
 const userRoutes = require('./routes/user');
 const bookingRoutes = require('./routes/booking');
+const reportRoutes = require('./routes/report');
 
 //middleware
 app.use(cors());
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 //routes
 app.use("/api/user", upload.none(), userRoutes);
 app.use("/api/booking", upload.none(), bookingRoutes);
+app.use("/api/report", upload.none(), reportRoutes);
 
 /**
  * RUN WITH CAUTION
