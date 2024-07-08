@@ -6,10 +6,12 @@ interface IProps {
         time: string,
         is_booked: boolean
     },
-    date: Date
+    date: Date,
+    handleModal: () => void,
+    callback: (arg0:string) => void
 };
 
-export default function TimeslotButton({timeslot, date}: IProps) {
+export default function TimeslotButton({timeslot, date, handleModal, callback}: IProps) {
     const router = useRouter();
     const { state } = useAuthContext();
 
@@ -30,7 +32,10 @@ export default function TimeslotButton({timeslot, date}: IProps) {
     }
 
     const handleClick = async () => {
+        handleModal();
         const date_string = date.toDateString();
+        callback(date_string + " " + timeString);
+        /*
         try {
             const response = await fetch("http://localhost:8080/api/booking/make_booking", {
                 headers: {
@@ -49,7 +54,8 @@ export default function TimeslotButton({timeslot, date}: IProps) {
             router.replace("/dashboard");
         } catch (e) {
             console.log(e);
-        }
+        } */
+       
     }
 
     const timeString = timeslot["time"]; //format: 10:00 AM
