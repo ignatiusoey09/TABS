@@ -20,6 +20,7 @@ export default function BookingOverlay({datetime, callback} : IProps) {
                 },
                 method: 'POST',
                 body: JSON.stringify({
+                    user: state.user?.user,
                     date: datetime.date.toDateString(),
                     time: datetime.startTime
                 })
