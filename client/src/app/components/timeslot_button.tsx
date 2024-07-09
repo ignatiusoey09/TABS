@@ -1,11 +1,14 @@
-import { useRouter } from "next/navigation";
-import { useAuthContext } from "../hooks/useAuthContext";
 import { IBookingData } from "../dashboard/page";
 
 interface IProps {
     timeslot: {
         time: string,
         is_booked: boolean
+        user?: {
+            email: string,
+            name: string,
+            role: string
+        },
     },
     date: Date,
     handleModal: () => void,
@@ -13,8 +16,6 @@ interface IProps {
 };
 
 export default function TimeslotButton({timeslot, date, handleModal, callback}: IProps) {
-    const router = useRouter();
-    const { state } = useAuthContext();
 
     function getEndTime(time_str:string) {
         var ampm = time_str.split(" ")[1];
@@ -54,6 +55,7 @@ export default function TimeslotButton({timeslot, date, handleModal, callback}: 
             onClick={handleClick}
         >
             <h2>{`${timeString}-${endTime}`}</h2>
+            {is_booked && <h2>Booked by: {timeslot.user?.name}</h2>}
         </button>
     );
 }

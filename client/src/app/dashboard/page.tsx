@@ -17,6 +17,11 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 type T_timeslot = {
     time: string,
     is_booked: boolean
+    user?: {
+        email: string,
+        name: string,
+        role: string,
+    }
 }
 
 interface IDisableDateArgs {
