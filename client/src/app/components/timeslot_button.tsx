@@ -40,26 +40,6 @@ export default function TimeslotButton({timeslot, date, handleModal, callback}: 
             startTime: timeString,
             endTime: endTime
         });
-        /*
-        try {
-            const response = await fetch("http://localhost:8080/api/booking/make_booking", {
-                headers: {
-                    'Content-Type': 'application/JSON',
-                    'Authorization': `Bearer ${state.user?.token}` 
-                },
-                method: 'POST',
-                body: JSON.stringify({
-                    date: date_string,
-                    time: timeString
-                })
-            });
-
-            const res_json = await response.json();
-            console.log(res_json);
-            router.replace("/dashboard");
-        } catch (e) {
-            console.log(e);
-        } */
        
     }
 

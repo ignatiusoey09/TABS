@@ -38,6 +38,7 @@ export default function Dashboard() {
     const [timeslots, set_timeSlots] = useState<Array<T_timeslot>>([{time:"smthing", is_booked:false}]);
     const [modalOpen, setModalOpen] = useState(false);
     const [bookingData, setBookingData] = useState<IBookingData>({date: new Date(), startTime:"", endTime:""});
+    const [update, setUpdate] = useState(false);
     const { getTimeslots, isLoading } = useGetTimeslots();
     const { state }  = useAuthContext();
     const user = state["user"];
@@ -68,10 +69,12 @@ export default function Dashboard() {
 
     //handles booking confirmation overlay
     const handleModalOpen = () => {
+        setUpdate(false);
         setModalOpen(true);
     }
 
     const handleModalClose = () => {
+        setUpdate(true);
         setModalOpen(false);
     }
 
@@ -82,7 +85,8 @@ export default function Dashboard() {
         }
 
         fetchData().catch(console.error);
-    }, [calendarValue, user]);
+    }, [calendarValue, user, update]);
+
 
     const Child = () => (
         <>  
