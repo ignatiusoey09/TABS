@@ -21,6 +21,7 @@ const getDateTimeslots = async (req, res) => {
 const makeBooking = async (req, res) => {
     let query_date = req.body["date"];
     let query_time = req.body["time"];
+    let user = req.body["user"]; 
 
     try {
         //retrieve booking document
@@ -42,6 +43,7 @@ const makeBooking = async (req, res) => {
                     throw new Error("This timeslot is already booked");
                 } else {
                     ts["is_booked"] = true;
+                    ts["user"] = user;
                     await booking.save();
                     res.status(200).json({status: "success"});
                     break;
