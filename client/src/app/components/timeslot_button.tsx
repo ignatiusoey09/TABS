@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { IBookingData } from "../dashboard/page";
 
 interface IProps {
     timeslot: {
@@ -8,7 +9,7 @@ interface IProps {
     },
     date: Date,
     handleModal: () => void,
-    callback: (arg0:string) => void
+    callback: (arg0:IBookingData) => void
 };
 
 export default function TimeslotButton({timeslot, date, handleModal, callback}: IProps) {
@@ -34,7 +35,11 @@ export default function TimeslotButton({timeslot, date, handleModal, callback}: 
     const handleClick = async () => {
         handleModal();
         const date_string = date.toDateString();
-        callback(date_string + " " + timeString);
+        callback({
+            date: date,
+            startTime: timeString,
+            endTime: endTime
+        });
         /*
         try {
             const response = await fetch("http://localhost:8080/api/booking/make_booking", {
