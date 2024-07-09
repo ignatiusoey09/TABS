@@ -15,9 +15,11 @@
     "react": "^18",
     "react-calendar": "^5.0.0",
     "react-dom": "^18",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
+    "@klarr-agency/circum-icons-react": "^2.0.2",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^18",

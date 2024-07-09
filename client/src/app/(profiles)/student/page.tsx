@@ -42,6 +42,7 @@ export default function Profile() {
                         {user.email}
                     </h2>
                 </div>
+                
                 <button
                     className="mt-auto self-center text-xl text-red-600"
                     onClick={handleClick}>

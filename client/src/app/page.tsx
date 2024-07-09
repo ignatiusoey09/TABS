@@ -43,7 +43,7 @@ export default function Home() {
         >
           Login
         </button>
-        <MoonLoader className="mt-8 self-center lg:mx-32" loading={isLoading} />
+          <MoonLoader className="mt-8 self-center lg:mx-32" loading={isLoading} />
       </form>
       <div className="invisible lg:visible lg:w-[20%]"></div>
     </div>
