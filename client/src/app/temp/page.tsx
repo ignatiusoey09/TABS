@@ -13,7 +13,6 @@ export default function Temp() {
 
     const Child = () => (
         <>
-            {modalOpen && <BookingOverlay datetime="datetime here" callback={handleModalClose}/>}
             <h2>TESTING 123</h2>
             <h2>SAMPLE TEXT SAAMPLE TEXT</h2>
         </>
