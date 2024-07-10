@@ -10,6 +10,18 @@ const timeslotSchema = new Schema({
     is_booked: {
         type: Boolean,
         required: true
+    },
+    user: {
+        email: {
+            type: String,
+            unique: true,
+        },
+        name: {
+            type: String,
+        },
+        role: {
+            type: String,
+        }
     }
 });
 

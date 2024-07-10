@@ -23,7 +23,9 @@ export default function Navbar_Desktop() {
                     <NavbarButton icon={ <ReportIcon height={50} width={50} />} text='Report'/>
                 </div>
                 <div className='basis-3/12'/>
-                <NavbarButton icon={ <AboutIcon height={50} width={50} />} text='About'/>
+                <Link href="/temp">
+                    <NavbarButton icon={ <AboutIcon height={50} width={50} />} text='About'/>
+                </Link>
             </div>
         </>
     );
