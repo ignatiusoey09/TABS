@@ -32,15 +32,20 @@ app.use("/api/report", upload.none(), reportRoutes);
 //Handling db maintanence job scheduling
 const populateMonth = require("./misc/populateMonth");
 const deleteOldSlots = require("./misc/deleteOldSlots");
-//best practice would be to assign an actual cronjob on render but they charge $1 so...
-const job = schedule.scheduleJob('0 0 1 * *', function() {
-    console.log("DB cleanup started");
-    console.time("cron");
-    deleteOldSlots();
-    populateMonth();
-    console.timeEnd("cron")
-    console.log("DB cleanup completed");
-});
+//best practice would be to assign an actual cronjob on render but they charge for it so...
+function scheduledTask() {
+    try {
+        console.log("DB cleanup started");
+        console.time("cron");
+        deleteOldSlots();
+        populateMonth();
+        console.timeEnd("cron")
+        console.log("DB cleanup completed");
+    } catch (e) {
+        console.log(e);
+    }
+}
+const job = schedule.scheduleJob('0 0 1 * *', scheduledTask);
 
 mongoose.connect(uri, {dbName: "tabs_main"}).then(() => {
     //listen for requests
