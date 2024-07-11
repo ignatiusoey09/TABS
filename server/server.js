@@ -7,6 +7,7 @@ const uri = process.env.URI;
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
+const schedule = require("node-schedule");
 const upload = multer();
 
 const app = express();
@@ -28,11 +29,23 @@ app.use("/api/user", upload.none(), userRoutes);
 app.use("/api/booking", upload.none(), bookingRoutes);
 app.use("/api/report", upload.none(), reportRoutes);
 
-/**
- * RUN WITH CAUTION
- */
-//const populateMonth = require("./misc/populateMonth");
-//populateMonth();
+//Handling db maintanence job scheduling
+const populateMonth = require("./misc/populateMonth");
+const deleteOldSlots = require("./misc/deleteOldSlots");
+//best practice would be to assign an actual cronjob on render but they charge for it so...
+function scheduledTask() {
+    try {
+        console.log("DB cleanup started");
+        console.time("cron");
+        deleteOldSlots();
+        populateMonth();
+        console.timeEnd("cron")
+        console.log("DB cleanup completed");
+    } catch (e) {
+        console.log(e);
+    }
+}
+const job = schedule.scheduleJob('0 0 1 * *', scheduledTask);
 
 mongoose.connect(uri, {dbName: "tabs_main"}).then(() => {
     //listen for requests
