@@ -17,6 +17,7 @@ interface IAction {
     readonly type: string,
     readonly payload: {
         user: {
+            id: string,
             email: string,
             name: string,
             role: string,
@@ -28,6 +29,7 @@ interface IAction {
 interface IState {
     user: {
         user: {
+            id: string,
             email: string,
             name: string,
             role: string,
@@ -62,10 +64,10 @@ export const AuthContextProvider = ({ children }:IChildrenProps) => {
     });
 
     useEffect(() => {
-        console.log("retrieved user");
         const retrieve = localStorage.getItem("user");
 
         if (retrieve) {
+            console.log("retrieved user");
             const user = JSON.parse(retrieve);
 
             //check if token expiry

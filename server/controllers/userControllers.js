@@ -16,7 +16,7 @@ const loginUser = async (req, res) => {
         const user = await User.login(email_field, pass_field);
 
         //removing password and id for security
-        const user_response = {email:user.email, name: user.name, role:user.role};
+        const user_response = {id:user._id, email:user.email, name: user.name, role:user.role};
         const token = createToken(user._id);
 
         res.status(200).json({user:user_response, token});
