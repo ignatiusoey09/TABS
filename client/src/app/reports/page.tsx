@@ -6,9 +6,11 @@ import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 import React, { FormEvent, useState } from "react";
 import error from "next/error";
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useReportContext } from '../hooks/useReportContext';
+
 
 
 
@@ -36,9 +38,9 @@ export default function Reports() {
 
     // styling
     const error_input_style = error ? "border-2 border-red-400" : "border-1";
+
     const input_style = "w-full mt-4 p-2.5 border rounded-lg focus:ring focus:ring-tembu-lightgreen focus:ring-opacity-50";
     const desc_input_style = input_style + " h-28";
-
 
     
     // variables to store input field data
@@ -65,6 +67,7 @@ export default function Reports() {
         }
         const report = {name, item, description}
         console.log(report)
+
         const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
         const response = await fetch(`${backend_url}/api/report/submitReport`, {
@@ -96,6 +99,7 @@ export default function Reports() {
             setItem('')
             setDesc('')
             console.log("new report added", json)
+
             dispatch({type:'UPLOAD_REPORT', payload: json})
             toast.success('Report submitted! 🥱', {  // popup notification
                 position: "top-right",
@@ -110,9 +114,6 @@ export default function Reports() {
         }
       }
 
-
-
-
     return (
         <Layout>
             <div className="flex flex-col items-center px-4 py-8">
@@ -126,6 +127,7 @@ export default function Reports() {
                 <input type="text" name="description" className={desc_input_style} placeholder="Description:" onChange={(e) => setDesc(e.target.value)} value={description}/>
 
                 <button className="flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full transition-colors" type="submit">Submit</button>
+              
             </form>
             <ToastContainer />
             </div>

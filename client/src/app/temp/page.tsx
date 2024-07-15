@@ -1,9 +1,16 @@
 'use client'
 
 import Layout from "../components/layout";
-import Navbar_Desktop from "../components/desktop_navbar";
+import BookingOverlay from "../components/booking_overlay";
+import { useState } from "react";
 
 export default function Temp() {
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+    }
+
     const Child = () => (
         <>
             <h2>TESTING 123</h2>
@@ -11,6 +18,8 @@ export default function Temp() {
         </>
     );
     return (
-        <Navbar_Desktop />
+        <Layout>
+            <Child></Child>
+        </Layout>
     );
 }

@@ -23,7 +23,6 @@ async function populateMonth() {
             const doc = {
                 date: dateString,
                 slots: [
-                    {time: "8:00 AM", is_booked: false},
                     {time: "10:00 AM", is_booked: false},
                     {time: "12:00 PM", is_booked: false},
                     {time: "2:00 PM", is_booked: false},

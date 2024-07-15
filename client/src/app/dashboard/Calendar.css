@@ -92,6 +92,7 @@
     display: grid !important;
     grid-template-columns: 14.2% 14.2% 14.2% 14.2% 14.2% 14.2% 14.2%;
     row-gap: 2%;
+    justify-items: center;
   }
   
   .react-calendar__month-view__days__day--weekend {
