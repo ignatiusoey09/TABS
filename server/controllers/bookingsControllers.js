@@ -62,4 +62,45 @@ const makeBooking = async (req, res) => {
     }
 }
 
-module.exports = { getDateTimeslots, makeBooking };
+const getBookingsByUser = async (req, res) => {
+    //find all bookings under a specific user
+    let user_id = req.body["user_id"];
+
+    try {
+        //get all bookings and iterate through
+        const bookings = await Booking.find();
+
+        var result = new Map();
+
+        for (let i = 0; i < bookings.length; i++) {
+
+            if (bookings.length == 0) {
+                break;
+            }
+
+            let booking = bookings[i];
+            let date = booking.date;
+            let arr = [];
+            for (let j = 0; j < booking.slots.length; j++) {
+                let timeslot = booking.slots[j];
+                if (timeslot.user.id == user_id) {
+                    arr.push(timeslot);
+                }
+            }
+            
+            if (arr.length > 0) {
+                result.set(date,arr);
+            }
+        }
+
+        var obj = Object.fromEntries(result);
+        res.status(200).json({bookings:obj});
+
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({error:e});
+    }
+    
+}
+
+module.exports = { getDateTimeslots, makeBooking, getBookingsByUser };
