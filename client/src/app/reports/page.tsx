@@ -7,6 +7,11 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import React, { FormEvent, useState } from "react";
 import error from "next/error";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useReportContext } from '../hooks/useReportContext';
+
+
 
 
 export default function Reports() {
@@ -16,6 +21,7 @@ export default function Reports() {
 
     //retrieve stored user in localstorage
     const retrieve = state.user;
+    const token = retrieve?.token ? retrieve.token : ''
 
     var user;
     if (retrieve) {
@@ -32,13 +38,9 @@ export default function Reports() {
 
     // styling
     const error_input_style = error ? "border-2 border-red-400" : "border-1";
-    const input_style = `h-8 w-[70%] lg:h-7 lg:w-full m-3`;
-    const desc_input_style = `h-20 w-[70%] lg:h-7 lg:w-full m-3`;
- 
-    const form_style_lg = "lg:ml-14 lg:px-0 lg:mt-[8%] lg:items-start";
-    const form_style_md = "md:mt-[45%] md:px-28";
-    const form_style = `grow flex flex-col mt-[60%] items-center ${form_style_md} ${form_style_lg}`;
-    //
+
+    const input_style = "w-full mt-4 p-2.5 border rounded-lg focus:ring focus:ring-tembu-lightgreen focus:ring-opacity-50";
+    const desc_input_style = input_style + " h-28";
 
     
     // variables to store input field data
@@ -46,13 +48,25 @@ export default function Reports() {
     const [item, setItem] = useState('')
     const [description, setDesc] = useState('')
     
-
+    const { dispatch } = useReportContext()
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
-
-        console.log(name,item,description)
+        if (!name || !item || !description){
+            toast.warn('Fill in ALL input fields', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
+            return
+        }
         const report = {name, item, description}
+        console.log(report)
 
         const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -60,7 +74,8 @@ export default function Reports() {
             method: 'POST',
             body: JSON.stringify(report),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
 
@@ -68,31 +83,54 @@ export default function Reports() {
 
         if(!response.ok){
             console.log(json.error)
+            toast.error('Sorry! There was an issue with your submission 🥴', {  // popup notification
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         }
         if(response.ok){
             setName('')
             setItem('')
             setDesc('')
             console.log("new report added", json)
+
+            dispatch({type:'UPLOAD_REPORT', payload: json})
+            toast.success('Report submitted! 🥱', {  // popup notification
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         }
-
       }
-
 
     return (
         <Layout>
-            
-            <form className={form_style} onSubmit={ handleSubmit }>
-                <h2 className="text-center align-text-top text-3xl m-1 text-title-gray">Submit a new report</h2>
+            <div className="flex flex-col items-center px-4 py-8">
+            <h1 className="text-center align-text-top text-3xl font-semi m-1 text-title-gray mb-6">Submit a new report</h1>
+            <form className="w-full max-w-md space-y-6" onSubmit={ handleSubmit }>
                 
-                <input type="text" name="name" className={input_style} placeholder="Name:" onChange={(e) => setName(e.target.value)} value={name} required/>
+                <input type="text" name="name" className={input_style} placeholder="Name:" onChange={(e) => setName(e.target.value)} value={name}/>
 
-                <input type="text" name="itemDamaged" className={input_style} placeholder="Item:" onChange={(e) => setItem(e.target.value)} value={item} required/>
+                <input type="text" name="itemDamaged" className={input_style} placeholder="Item:" onChange={(e) => setItem(e.target.value)} value={item}/>
 
-                <input type="text" name="description" className={desc_input_style} placeholder="Description:" onChange={(e) => setDesc(e.target.value)} value={description} required/>
+                <input type="text" name="description" className={desc_input_style} placeholder="Description:" onChange={(e) => setDesc(e.target.value)} value={description}/>
 
-                <button className= "bg-tembu-lightgreen rounded text-white mt-10 w-[30%] lg:w-full" type="submit">Submit</button>
+                <button className="flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full transition-colors" type="submit">Submit</button>
+              
             </form>
+            <ToastContainer />
+            </div>
         </Layout>
     );
 }

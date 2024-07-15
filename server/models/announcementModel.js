@@ -2,19 +2,23 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const reportSchema = new Schema({
+const announcementSchema = new Schema({
     name: {
         type: String,
         required: true
     },
-    item: {
+    role: {
         type: String,
         required: true
     },
-    description: {
+    title: {
+        type: String,
+        required: true
+    },
+    message: {
         type: String,
         required: true
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model('Report', reportSchema);
+module.exports = mongoose.model('Announcement', announcementSchema);

@@ -1,4 +1,7 @@
 module.exports = {
+    experimental: {
+        missingSuspenseWithCSRBailout: false,
+      },
     webpack(config) {
         //svg
         const fileLoaderRule = config.module.rules.find((rule) =>

@@ -16,6 +16,7 @@ const app = express();
 const userRoutes = require('./routes/user');
 const bookingRoutes = require('./routes/booking');
 const reportRoutes = require('./routes/report');
+const announcementRoutes = require('./routes/announcement');
 
 //middleware
 app.use(cors());
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 app.use("/api/user", upload.none(), userRoutes);
 app.use("/api/booking", upload.none(), bookingRoutes);
 app.use("/api/report", upload.none(), reportRoutes);
+app.use("/api/announcement", upload.none(), announcementRoutes);
 
 //Handling db maintanence job scheduling
 const populateMonth = require("./misc/populateMonth");

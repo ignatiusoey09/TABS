@@ -19,8 +19,12 @@ export default function Navbar_Desktop() {
                     <Link href='/dashboard'>
                         <NavbarButton icon={ <BookingIcon height={50} width={50} />} text='Bookings'/>
                     </Link>
-                    <NavbarButton icon={ <NewsIcon height={50} width={50} />} text='News'/>
-                    <NavbarButton icon={ <ReportIcon height={50} width={50} />} text='Report'/>
+                    <Link href='/announcements'>
+                        <NavbarButton icon={ <NewsIcon height={50} width={50} />} text='News'/>
+                    </Link>
+                    <Link href='/reports'>
+                        <NavbarButton icon={ <ReportIcon height={50} width={50} />} text='Report'/>
+                    </Link>
                 </div>
                 <div className='basis-3/12'/>
                 <Link href="/temp">
