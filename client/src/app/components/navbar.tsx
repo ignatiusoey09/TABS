@@ -43,7 +43,7 @@ export default function Navbar({ show, setter } : IProps) {
                     <Link href='/announcements'>
                         <NavbarButton icon={ <NewsIcon height={50} width={50} />} text='News'/>
                     </Link>
-                    <Link href='/reports'>
+                    <Link href='/reportForm'>
                         <NavbarButton icon={ <ReportIcon height={50} width={50} />} text='Report'/>
                     </Link>
                 </div>

@@ -1,7 +1,6 @@
 import React from 'react'; // Import React
 import Link from 'next/link';
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { Space_Mono } from "next/font/google";
 import { CiEdit } from "react-icons/ci";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";

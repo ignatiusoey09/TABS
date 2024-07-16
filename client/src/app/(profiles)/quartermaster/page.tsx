@@ -45,50 +45,25 @@ export default function Profile () {
         router.push("/");
     }
 
-    const { stateAnn, dispatch } = useReportContext()
-
-
-    useEffect(() => {
-        const fetchReports = async () => {
-            const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-            const response = await toast.promise(  // using toast.promise to show loading bar
-                fetch(`${backend_url}/api/report/getReports`, {
-                headers: {
-                    'Authorization': `Bearer ${state.user?.token}`
-                }
-            }), 
-                {
-                    pending: 'Fetching all reports 📥',
-                    success: 'All reports fetched 🥳',
-                    error: 'Sorry something wrong has occured 😭'
-                }
-            )
-            const json = await response.json()
-            
-
-            if (response.ok){
-                dispatch({type: 'SHOW_REPORTS', payload: json})
-            }
-        }
-        fetchReports()
-        }, [dispatch])
-    
-
-    const peek = "invisible"
-    const aboo = "visible"
-    const [showReports, setShowReports] = useState(peek)
     const handleReport = () => {
-        if(showReports == peek){
-            setShowReports(aboo)
-        }
-        else{
-            setShowReports(peek)
-        }
+        router.replace('/viewReports')
     }
 
+    const newAnnouncement = () => {
+        router.replace('/announcementForm')
+    }
 
+    const newAccount = () => {
 
+    }
+
+    const manageInventory = () => {
+
+    }
+
+    const manageAbbey = () => {
+
+    }
 
     return (
         <Layout>
@@ -105,23 +80,20 @@ export default function Profile () {
                 </h2>
 
                 <div className="flex-grow py-10">
-                    <div className="bg-purple-100 p-6 rounded-lg mb-4">
-                        <button onClick={handleReport}>Current Reports</button>
+                    <div>
+                        <button onClick={handleReport} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">View Reports</button>
+                        <button onClick={newAnnouncement} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">New Announcement</button>
+                        <button onClick={newAccount} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">Register Account</button>
+                        <button onClick={manageInventory} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">Manage Inventory</button>
+                        <button onClick={manageAbbey} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">Manage Abbey Slots</button>
                     </div>
-                </div>
 
-                
-                <div className={showReports}>
-                    <div className="border rounded-lg ring-4 px-2 py-2">
-                        {stateAnn && stateAnn.reports && stateAnn.reports.map(report => (
-                            <ReportDetails key={report._id} report={report} token={token} />
-                        ))}
-                    </div>
+                    
                 </div>
                 
 
                 <button
-                    className="mt-auto self-center text-xl text-red-600"
+                    className="mt-auto self-center text-xl text-red-600 pt-2"
                     onClick={handleClick}>
                         Logout
                 </button>  

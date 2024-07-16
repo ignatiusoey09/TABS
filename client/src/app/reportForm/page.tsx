@@ -6,15 +6,13 @@ import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 import React, { FormEvent, useState } from "react";
 import error from "next/error";
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useReportContext } from '../hooks/useReportContext';
 
 
 
-
-export default function Reports() {
+export default function ReportForm() {
     const router = useRouter();
     const { logout } = useLogout();
     const { state } = useAuthContext();
@@ -38,7 +36,6 @@ export default function Reports() {
 
     // styling
     const error_input_style = error ? "border-2 border-red-400" : "border-1";
-
     const input_style = "w-full mt-4 p-2.5 border rounded-lg focus:ring focus:ring-tembu-lightgreen focus:ring-opacity-50";
     const desc_input_style = input_style + " h-28";
 
@@ -119,7 +116,7 @@ export default function Reports() {
             <div className="flex flex-col items-center px-4 py-8">
             <h1 className="text-center align-text-top text-3xl font-semi m-1 text-title-gray mb-6">Submit a new report</h1>
             <form className="w-full max-w-md space-y-6" onSubmit={ handleSubmit }>
-                
+    
                 <input type="text" name="name" className={input_style} placeholder="Name:" onChange={(e) => setName(e.target.value)} value={name}/>
 
                 <input type="text" name="itemDamaged" className={input_style} placeholder="Item:" onChange={(e) => setItem(e.target.value)} value={item}/>
@@ -127,7 +124,6 @@ export default function Reports() {
                 <input type="text" name="description" className={desc_input_style} placeholder="Description:" onChange={(e) => setDesc(e.target.value)} value={description}/>
 
                 <button className="flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full transition-colors" type="submit">Submit</button>
-              
             </form>
             <ToastContainer />
             </div>

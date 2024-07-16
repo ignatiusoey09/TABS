@@ -91,27 +91,28 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, token }) => {
 
 
     return (
-        <div className="bg-purple-100 p-6 rounded-lg mb-4 relative flex items-start">
-            <img alt="profile" className="w-16 h-16 rounded-full shadow-md mr-4" />
+        <div className="bg-gray-100 p-6 rounded-lg mb-4 mx-1 relative flex items-start transition duration-300 ease-in-out hover:bg-gray-200 ring-2 ring-teal-500">
             <div className="flex-grow flex flex-col justify-between">
-            <div>
-                <h4 className="text-lg font-semibold">{report.item}</h4>
-                <p className="text-gray-600">{report.description}</p>
-            </div>
-            <div className="flex justify-between items-center w-full mt-2">
-                <p className="text-xs text-gray-500">{report.name}</p>
-            </div>
-            </div>
-            <p className="text-xs text-gray-500 absolute left-4 bottom-4">
-                {new Date(date).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                })}
-            </p>
-            <div className="flex absolute right-4 bottom-4 space-x-2">
-            <span onClick={handleResolve} className="cursor-pointer">
-                <IoIosCheckbox color="#00563B" size="20px" />
-             </span>
+                <div>
+                    <h4 className="text-lg font-semibold">Item: {report.item}</h4>
+                    <p className="text-gray-600">Damage: {report.description}</p>
+                </div>
+
+                
+                    <p className="text-xs text-gray-500">Name: {report.name}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                    {new Date(date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric'
+                    })}
+                    </p>
+                
+                
+                <div className="flex absolute right-4 bottom-4">
+                    <span onClick={handleResolve} className="cursor-pointer">
+                        <IoIosCheckbox color="#00563B" size="20px" />
+                    </span>
+                </div>
             </div>
         </div>
     )

@@ -75,6 +75,11 @@ export default function Announcements() {
                 <h2 className="text-center align-text-top text-3xl m-1 text-title-gray">Announcements</h2>
 
                 <div>
+                {stateAnn.announcements.length == 0 && (
+                <div className="bg-gray-100 p-6 rounded-lg mb-4 mx-1 borderbg-gray-100 transition duration-300 ease-in-out hover:bg-gray-200 ring-teal-500 ring-2">
+                    <h1 className="text-center text-xl text-gray-600 font-semibold p-6">No announcements 🥳</h1>
+                </div>
+            )}
                 {stateAnn && stateAnn.announcements && stateAnn.announcements.map(announcement => (
                     <AnnouncementDetails key={announcement._id} announcement={announcement} />
                 ))}

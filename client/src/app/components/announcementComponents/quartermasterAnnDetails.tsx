@@ -92,7 +92,7 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({ announcement,
 
 
     return (
-        <div className="bg-purple-100 p-6 rounded-lg mb-4 relative flex items-start">
+        <div className="bg-gray-100 p-6 rounded-lg mb-4 mx-1 relative flex items-start transition duration-300 ease-in-out hover:bg-gray-200 ring-2 ring-teal-500">
             <img alt="profile" className="w-16 h-16 rounded-full shadow-md mr-4" />
             <div className="flex-grow flex flex-col justify-between">
                 <div>

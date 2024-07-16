@@ -1,61 +1,56 @@
+'use client'
+
 import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/app/hooks/useAuthContext";
+import { useLogout } from "@/app/hooks/useLogout";
+import Layout from "@/app/components/layout";
 import error from "next/error";
-import { useAnnouncementContext } from "../../hooks/useAnnouncementContext";
+import { useAnnouncementContext } from "../hooks/useAnnouncementContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-interface AnnouncementFormProps {
-    name: string,
-    role: string,
-    token?: string,
-}
 
 
 
+export default function AnnouncementForm () {
 
-const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ name, role, token}) => {
+    const router = useRouter();
+    const { logout } = useLogout();
+    const { state } = useAuthContext();
+    
+    //retrieve stored user in localstorage
+    const retrieve = state.user;
+    const token = retrieve?.token ? retrieve.token : ''
+
+    var user;
+    if (retrieve) {
+        user = retrieve.user;
+    } else {
+        user = {email:"", name: "", role:""};
+    }
+
+    const handleClick = () => {
+        logout();
+        //send back to login page
+        router.push("/");
+    }
+
+    const name = user.name
+    const role = user.role
+
+
+
 
     const { dispatch } = useAnnouncementContext()
     // variables to store input field data
     const [title, setTitle] = useState('')
     const [message, setMessage] = useState('')
 
-
-    // New Announcement button style
-    const unClicked = "bg-tembu-lightgreen rounded text-white mt-10 lg:w-full"
-    const clicked = "bg-tembu-green rounded text-white mt-10 lg:w-full"
-    const [uploadButtonStyle, setUploadButtonStyle] = useState(unClicked)
-
-
-    // check if clicked or unclicked to determine whether to show the form or not
-    const [isOpen, setIsOpen] = useState(false)
-
-    const displayForm = () => {
-        setIsOpen(!isOpen)
-        if(isOpen){
-            setUploadButtonStyle(unClicked)
-        }
-        else{
-            setUploadButtonStyle(clicked)
-        }
-    }
-
-    
     // styling
     const error_input_style = error ? "border-2 border-red-400" : "border-1";
     const input_style = "w-full mt-4 p-2.5 border rounded-lg focus:ring focus:ring-tembu-lightgreen focus:ring-opacity-50";
     const desc_input_style = input_style + " h-28";
-
-    const uploadButtonVisibility = role !== 'student' ? "flex justify-center" : "hidden"; // show new announcement button if role is not user
-
-    let form_style;
-    if(isOpen){
-        form_style = "w-full max-w-md space-y-6 border rounded-lg ring-4 ring-emerald-300 px-5 py-5 visible";
-    }
-    else{
-        form_style = "w-full max-w-md space-y-6 border rounded-lg ring-4 ring-emerald-300 px-5 py-5 invisible";
-    }
-    //
 
     
     // handling submission
@@ -104,48 +99,35 @@ const AnnouncementForm: React.FC<AnnouncementFormProps> = ({ name, role, token})
             setTitle('')
             setMessage('')
             console.log('New annoucnement uploaded', json)
-            setIsOpen(!isOpen)
             dispatch({type: 'UPLOAD_ANNOUNCEMENT', payload: json})
-            toast.success('Announcement uploaded 🥳', {  // popup notification
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                });
+            router.replace('/announcements')
         }
+    }
+
+    const reRoute = () => {
+        router.replace('/profile')
     }
 
 
 
     
         return (
-            <div className="flex flex-col items-center px-4 py-8">
-                <div className={uploadButtonVisibility}>
-                    <button className={uploadButtonStyle} onClick={displayForm}>
-                        New Announcement
-                    </button>
-                </div>
-
-                <div className="py-5">
-                    <form className={form_style} onSubmit={ handleSubmit }>
+            <Layout>
+                <div className="flex flex-col items-center px-4 py-5">
+                    <form className="w-full max-w-md space-y-6 border rounded-lg ring-4 ring-teal-600 px-5 py-5" onSubmit={ handleSubmit }>
                         <h1 className="text-center align-text-top text-3xl font-semi m-1 text-title-green mb-6">Create new Announcement</h1>
 
                         <input type="text" name="title" className={input_style} placeholder="Title:" onChange={(e) => setTitle(e.target.value)} value={title}/>
 
                         <input type="text" name="message" className={desc_input_style} placeholder="Message:" onChange={(e) => setMessage(e.target.value)} value={message}/>
 
-                        <button className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full transition-colors" type="submit">Submit</button>
+                        <div className="flex flex-row">
+                            <button className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full mr-2 transition-colors" type="button" onClick={reRoute}>Cancel</button>
+                            <button className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full ml-2 transition-colors" type="submit">Submit</button>
+                        </div>
                     </form>
+                    <ToastContainer />
                 </div>
-            </div>
+            </Layout>
         )
-
-
-
 }
-
-export default AnnouncementForm
