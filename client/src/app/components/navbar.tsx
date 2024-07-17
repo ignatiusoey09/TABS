@@ -48,7 +48,9 @@ export default function Navbar({ show, setter } : IProps) {
                     </Link>
                 </div>
                 <div className='basis-3/12'/>
-                <NavbarButton icon={ <AboutIcon height={50} width={50} />} text='About'/>
+                <Link href='/temp'>
+                    <NavbarButton icon={ <AboutIcon height={50} width={50} />} text='About'/>
+                </Link>
             </div>
             {show ? <ModalOverlay /> : <></>}
         </>
