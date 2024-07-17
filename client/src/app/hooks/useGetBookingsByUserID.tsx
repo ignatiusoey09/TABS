@@ -27,18 +27,28 @@ export const useGetBookingsByUserId = () => {
             if (!response.ok) {
                 //error occured
                 console.log(response_data.error);
-                set_isLoading(false);
-                return {}
+                throw new Error("Server error");
             } else {
                 //200 ok
+                const myBookings = response_data["bookings"];
+                const dates = Object.keys(myBookings);
+                var arr = [];
+                for (var d of dates) {
+                    var bookings_by_date = myBookings[d]; //timeslots on date d
+                    let obj;
+                    for (let i = 0; i < bookings_by_date.length; i++) {
+                        obj = {date: d, time: bookings_by_date[i].time, id: bookings_by_date[i].id};
+                        arr.push(obj);
+                    }
+                }
                 set_isLoading(false);
-                return response_data["bookings"];
+                return arr;
             }
 
         } catch (e) {
             set_isLoading(false);
             console.log(e);
-            return {};
+            return [];
         }
 
     }

@@ -8,6 +8,7 @@ import { useGetBookingsByUserId } from "@/app/hooks/useGetBookingsByUserID";
 import { useEffect } from "react";
 import { useState } from "react";
 import UpcomingBooking from "../../components/upcoming_booking";
+import { MoonLoader } from "react-spinners";
 
 interface IUser {
     id: string,
@@ -44,19 +45,7 @@ export default function Profile() {
     useEffect(() => {
         const fetchData = async () => {
             const myBookings = await getBookings(user.id);
-            //myBookings is a json of arrays
-            //converting myBookings into an array of timeslots
-            const dates = Object.keys(myBookings);
-            var arr = [];
-            for (var d of dates) {
-                var bookings_by_date = myBookings[d]; //timeslots on date d
-                let obj;
-                for (let i = 0; i < bookings_by_date.length; i++) {
-                    obj = {date: d, time: bookings_by_date[i].time, id: bookings_by_date[i].id};
-                    arr.push(obj);
-                }
-            }
-            setUserBookings(arr);
+            setUserBookings(myBookings);
         }
         fetchData();
     }, []);
@@ -83,13 +72,14 @@ export default function Profile() {
                     </h2>
                 </div>
                     
-                <div className="m-auto mt-20 w-full h-full">
+                <div className="mt-20 w-[70%] h-full">
                     <h1>My Bookings</h1>
-                    <div className="flex flex-col w-[70%] space-y-4 overflow-y-auto h-64">
+                    <MoonLoader className="mx-auto mt-20" loading={isLoading}/>
+                    {!isLoading && <div className="flex flex-col space-y-4 overflow-y-auto h-64">
                         {userBookings.map(x => (
                             <UpcomingBooking date={x.date} time={x.time} booking_id={x.id} />
                         ))}
-                    </div>
+                    </div>}
                 </div>
                 
                 <button
