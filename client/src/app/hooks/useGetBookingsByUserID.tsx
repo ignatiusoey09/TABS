@@ -37,7 +37,7 @@ export const useGetBookingsByUserId = () => {
                     var bookings_by_date = myBookings[d]; //timeslots on date d
                     let obj;
                     for (let i = 0; i < bookings_by_date.length; i++) {
-                        obj = {date: d, time: bookings_by_date[i].time, id: bookings_by_date[i].id};
+                        obj = {date: d, time: bookings_by_date[i].time, id: bookings_by_date[i]._id};
                         arr.push(obj);
                     }
                 }
