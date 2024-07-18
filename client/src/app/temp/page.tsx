@@ -1,7 +1,7 @@
 'use client'
 
 import Layout from "../components/layout";
-import UpcomingBooking from "../components/upcoming_booking";
+import UpcomingBooking from "../components/profileComponents/upcoming_booking";
 
 export default function Temp() {
 

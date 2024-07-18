@@ -1,4 +1,6 @@
-import ThreeDots from "public/three_dots.svg";
+import CrossIcon from "public/cross_icon.svg";
+import { useState } from "react";
+import DeleteBookingModal from "./delete_booking_modal";
 
 interface IProps {
     date: string,
@@ -7,6 +9,8 @@ interface IProps {
 }
 
 export default function UpcomingBooking({date, time, booking_id}:IProps) {
+    const [isModalOpen, setModalOpen] = useState(false);
+
     const arr = date.split(" ");
     const day = arr[0];
     const month = arr[1];
@@ -40,6 +44,7 @@ export default function UpcomingBooking({date, time, booking_id}:IProps) {
         return `${endHour}:00 ${ampm}`;
     }
     const endTime = getEndTime(time);
+    const time_period = `${time} - ${endTime}`;
 
     return (
         <div className="flex flex-row rounded border border-2 border-tembu-green p-2 divide-x">
@@ -51,10 +56,13 @@ export default function UpcomingBooking({date, time, booking_id}:IProps) {
                 <div className="flex flex-col">
                     <h2 className="text-xs mt-1">{dayLong}</h2>
                     <div className="h-1/4"></div>
-                    <h2 className="text-xs">{`${time} - ${endTime}`}</h2>
+                    <h2 className="text-xs">{time_period}</h2>
                 </div>
-                <div className="ml-auto">
-                    <ThreeDots />
+                <div className="ml-auto relative">
+                    {isModalOpen && <DeleteBookingModal closeModal={()=>setModalOpen(false)} booking_id={booking_id} date={date} time={time_period}/>}
+                    <button className="h-auto" onClick={()=>setModalOpen(true)}>
+                        <CrossIcon/>
+                    </button>
                 </div>
             </div>
         </div>

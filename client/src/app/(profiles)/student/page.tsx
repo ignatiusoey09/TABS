@@ -7,7 +7,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useGetBookingsByUserId } from "@/app/hooks/useGetBookingsByUserID";
 import { useEffect } from "react";
 import { useState } from "react";
-import UpcomingBooking from "../../components/upcoming_booking";
+import UpcomingBooking from "../../components/profileComponents/upcoming_booking";
 import { MoonLoader } from "react-spinners";
 
 interface IUser {
@@ -46,6 +46,7 @@ export default function Profile() {
         const fetchData = async () => {
             const myBookings = await getBookings(user.id);
             setUserBookings(myBookings);
+            console.log(myBookings[0].id);
         }
         fetchData();
     }, []);
@@ -75,7 +76,7 @@ export default function Profile() {
                 <div className="mt-20 w-[70%] h-full">
                     <h1>My Bookings</h1>
                     <MoonLoader className="mx-auto mt-20" loading={isLoading}/>
-                    {!isLoading && <div className="flex flex-col space-y-4 overflow-y-auto h-64">
+                    {!isLoading && <div className="flex flex-col space-y-4 overflow-y-auto h-64 z-0">
                         {userBookings.map(x => (
                             <UpcomingBooking date={x.date} time={x.time} booking_id={x.id} />
                         ))}
