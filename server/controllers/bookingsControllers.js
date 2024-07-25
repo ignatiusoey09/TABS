@@ -103,4 +103,20 @@ const getBookingsByUser = async (req, res) => {
     
 }
 
-module.exports = { getDateTimeslots, makeBooking, getBookingsByUser };
+const deleteBookingById = async (req, res) => {
+    let date = req.body["date"];
+    let booking_id = req.body["booking_id"];
+
+    try {
+        await Booking.findOneAndUpdate({"slots._id": booking_id}, {$set: {
+            "slots.$.is_booked": false,
+            "slots.$.user": null
+        }});
+        res.status(200).json({message: "Booking deleted successfully"});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({error: e});
+    }
+}
+
+module.exports = { getDateTimeslots, makeBooking, getBookingsByUser, deleteBookingById };

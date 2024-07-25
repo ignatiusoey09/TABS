@@ -1,4 +1,4 @@
-const { getDateTimeslots, makeBooking, getBookingsByUser } = require("../controllers/bookingsControllers");
+const { getDateTimeslots, makeBooking, getBookingsByUser, deleteBookingById } = require("../controllers/bookingsControllers");
 const requireAuth = require("../middleware/requireAuth");
 
 const express = require("express");
@@ -15,5 +15,8 @@ router.post('/make_booking', makeBooking);
 
 //get bookings by user id route
 router.post('/get_user_bookings', getBookingsByUser);
+
+//delete bookings by bookingid route
+router.delete('/delete_booking', deleteBookingById);
 
 module.exports = router;

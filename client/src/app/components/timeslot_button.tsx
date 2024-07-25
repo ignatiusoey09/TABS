@@ -22,10 +22,13 @@ export default function TimeslotButton({timeslot, date, handleModal, callback}: 
         const hour = Number(time_str.split(":")[0]);
 
         let endHour;
-        if (hour + 2 > 12) {
-            //flip ampm and rollover hour
+        if (hour == 12) {
+            // roll over hours
+            endHour = 2;
+        } else if (hour + 2 == 12) {
+            //flip ampm
+            endHour = 12;
             ampm = (ampm == "AM") ? "PM" : "AM";
-            endHour = (hour + 2) - 12;
         } else {
             endHour = hour + 2;
         }

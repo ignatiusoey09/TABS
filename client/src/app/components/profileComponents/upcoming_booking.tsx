@@ -1,14 +1,17 @@
 import CrossIcon from "public/cross_icon.svg";
 import { useState } from "react";
 import DeleteBookingModal from "./delete_booking_modal";
+import{ IState } from "../../(profiles)/student/page"
 
 interface IProps {
+    setState: (value: IState[]) => void,
     date: string,
     time: string,
     booking_id: string
+    user_id: string,
 }
 
-export default function UpcomingBooking({date, time, booking_id}:IProps) {
+export default function UpcomingBooking({setState, date, time, booking_id, user_id}:IProps) {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const arr = date.split(" ");
@@ -33,16 +36,20 @@ export default function UpcomingBooking({date, time, booking_id}:IProps) {
         const hour = Number(time_str.split(":")[0]);
 
         let endHour;
-        if (hour + 2 > 12) {
-            //flip ampm and rollover hour
+        if (hour == 12) {
+            // roll over hours
+            endHour = 2;
+        } else if (hour + 2 == 12) {
+            //flip ampm
+            endHour = 12;
             ampm = (ampm == "AM") ? "PM" : "AM";
-            endHour = (hour + 2) - 12;
         } else {
             endHour = hour + 2;
         }
 
         return `${endHour}:00 ${ampm}`;
     }
+    
     const endTime = getEndTime(time);
     const time_period = `${time} - ${endTime}`;
 
@@ -59,7 +66,7 @@ export default function UpcomingBooking({date, time, booking_id}:IProps) {
                     <h2 className="text-xs">{time_period}</h2>
                 </div>
                 <div className="ml-auto relative">
-                    {isModalOpen && <DeleteBookingModal closeModal={()=>setModalOpen(false)} booking_id={booking_id} date={date} time={time_period}/>}
+                    {isModalOpen && <DeleteBookingModal closeModal={()=>setModalOpen(false)} setState={setState} booking_id={booking_id} user_id={user_id} date={date} time={time_period}/>}
                     <button className="h-auto" onClick={()=>setModalOpen(true)}>
                         <CrossIcon/>
                     </button>

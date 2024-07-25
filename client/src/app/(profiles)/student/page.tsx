@@ -17,7 +17,7 @@ interface IUser {
         role: string,
 };
 
-interface IState {
+export interface IState {
     date: string,
     time: string,
     id: string,
@@ -78,7 +78,7 @@ export default function Profile() {
                     <MoonLoader className="mx-auto mt-20" loading={isLoading}/>
                     {!isLoading && <div className="flex flex-col space-y-4 overflow-y-auto h-64 z-0">
                         {userBookings.map(x => (
-                            <UpcomingBooking date={x.date} time={x.time} booking_id={x.id} />
+                            <UpcomingBooking setState={setUserBookings} date={x.date} time={x.time} booking_id={x.id} user_id={user.id}/>
                         ))}
                     </div>}
                 </div>
