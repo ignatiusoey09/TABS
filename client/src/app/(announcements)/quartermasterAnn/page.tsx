@@ -74,7 +74,7 @@ export default function Announcements() {
     return (
             <Layout>
             <div>
-                <h2 className="text-center align-text-top text-3xl m-1 text-title-gray">Announcements</h2>
+                <h2 className="text-center my-5 align-text-top text-3xl m-1 text-title-gray">Announcements</h2>
 
                 <div>
                 {stateAnn.announcements.length == 0 && (
