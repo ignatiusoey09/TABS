@@ -60,7 +60,6 @@ export default function Profile() {
     /**
      * TODO: implement "my bookings" listings feature  
      */
-
     return (
         <Layout>
             <div className="flex flex-col w-full h-screen p-6 pl-14">
