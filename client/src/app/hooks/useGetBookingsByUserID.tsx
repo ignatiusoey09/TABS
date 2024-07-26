@@ -1,15 +1,17 @@
 import { useAuthContext } from "./useAuthContext";
-import { useState } from "react";
 
-export const useGetBookingsByUserId = () => {
+interface IParams {
+    setIsLoading: (value:boolean) => void,
+}
+
+export const useGetBookingsByUserId = ({setIsLoading}:IParams) => {
     //retrieve saved auth details
     const { state } = useAuthContext();
     const user = state.user;
 
-    const [isLoading, set_isLoading] = useState(false);
 
     const getBookings = async (user_id:string) => {
-        set_isLoading(true);
+        setIsLoading(true);
 
         try {
             const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -41,18 +43,18 @@ export const useGetBookingsByUserId = () => {
                         arr.push(obj);
                     }
                 }
-                set_isLoading(false);
+                setIsLoading(false);
                 return arr;
             }
 
         } catch (e) {
-            set_isLoading(false);
+            setIsLoading(false);
             console.log(e);
             return [];
         }
 
     }
 
-    return { getBookings, isLoading };
+    return { getBookings };
 }
 

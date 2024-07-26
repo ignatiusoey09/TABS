@@ -1,5 +1,6 @@
 import { useDeleteBooking } from "../../hooks/useDeleteBooking"
 import { useGetBookingsByUserId } from "@/app/hooks/useGetBookingsByUserID"
+import { useBookingLoadingContext } from "@/app/hooks/useBookingLoadingContext"
 import { useRouter } from "next/navigation"
 import { IState } from "../../(profiles)/student/page"
 
@@ -13,8 +14,9 @@ interface IProps {
 }
 
 export default function DeleteBookingModal ({closeModal, setState, booking_id, user_id, date, time}:IProps) {
+    const { setIsLoading } = useBookingLoadingContext();
     const { deleteBooking } = useDeleteBooking();
-    const { getBookings } = useGetBookingsByUserId();
+    const { getBookings } = useGetBookingsByUserId({setIsLoading});
     const router = useRouter();
 
     const handleDelete = async () => {

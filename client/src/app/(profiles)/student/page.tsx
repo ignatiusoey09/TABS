@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import Layout from "../../components/layout";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useBookingLoadingContext } from "@/app/hooks/useBookingLoadingContext";
+import { LoadingProvider } from "@/app/context/bookingLoadingContext"; 
 import { useGetBookingsByUserId } from "@/app/hooks/useGetBookingsByUserID";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -28,7 +30,8 @@ export default function Profile() {
     const router = useRouter();
     const { logout } = useLogout();
     const { state } = useAuthContext();
-    const { getBookings, isLoading } = useGetBookingsByUserId();
+    const { isLoading, setIsLoading } = useBookingLoadingContext();
+    const { getBookings } = useGetBookingsByUserId({setIsLoading});
     const [ userBookings, setUserBookings ] = useState<IState[]>([]);
 
     //retrieve stored user in localstorage
@@ -47,6 +50,7 @@ export default function Profile() {
             const myBookings = await getBookings(user.id);
             setUserBookings(myBookings);
             console.log(myBookings[0].id);
+            console.log(myBookings);
         }
         fetchData();
     }, []);
