@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthContextProvider } from "./context/authContext";
 import { AnnouncementContextProvider } from "./context/announcementContext";
 import { ReportContextProvider } from "./context/reportContext";
+import { LoadingProvider } from "./context/bookingLoadingContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <AuthContextProvider>
       <AnnouncementContextProvider>
       <ReportContextProvider>
-        <body className={inter.className}>{children}</body>
+        <LoadingProvider>
+          <body className={inter.className}>{children}</body>
+        </LoadingProvider>
       </ReportContextProvider>
       </AnnouncementContextProvider>
       </AuthContextProvider>
