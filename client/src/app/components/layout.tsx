@@ -14,7 +14,7 @@ export default function Layout({children} : IProps ) {
     const [showNavbar, setShowNavbar] = useState<boolean>(false);
 
     return (
-        <div className='flex flex-col min-h-screen'>
+        <div className='flex flex-col h-screen'>
             <Navbar show={showNavbar} setter={setShowNavbar} />
 
             <div className='visible flex flex-row h-16 bg-white place-items-center z-10 drop-shadow lg:hidden'>

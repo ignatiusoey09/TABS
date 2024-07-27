@@ -12,6 +12,10 @@ const timeslotSchema = new Schema({
         required: true
     },
     user: {
+        id: {
+            type: String,
+            unique: true,
+        },
         email: {
             type: String,
             unique: true,

@@ -27,7 +27,7 @@ export default function BookingOverlay({datetime, callback} : IProps) {
             });
 
             const res_json = await response.json();
-            console.log(res_json);
+            console.log(res_json["status"]);
             callback();
         } catch (e) {
             console.log(e);
