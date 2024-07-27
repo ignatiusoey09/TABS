@@ -5,12 +5,13 @@ import Layout from "../../components/layout";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useBookingLoadingContext } from "@/app/hooks/useBookingLoadingContext";
-import { LoadingProvider } from "@/app/context/bookingLoadingContext"; 
 import { useGetBookingsByUserId } from "@/app/hooks/useGetBookingsByUserID";
 import { useEffect } from "react";
 import { useState } from "react";
 import UpcomingBooking from "../../components/profileComponents/upcoming_booking";
 import { MoonLoader } from "react-spinners";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 interface IUser {
     id: string,
@@ -43,7 +44,6 @@ export default function Profile() {
     } else {
         user = {id:"", email:"", name: "", role:"",};
     }
-
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,7 +90,8 @@ export default function Profile() {
                     className="mt-auto self-center text-xl text-red-600"
                     onClick={handleClick}>
                         Logout
-                </button>        
+                </button>
+                <ToastContainer />        
             </div>
         </Layout>
     );

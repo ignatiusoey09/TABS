@@ -1,8 +1,10 @@
+'use client'
+
 import { useDeleteBooking } from "../../hooks/useDeleteBooking"
 import { useGetBookingsByUserId } from "@/app/hooks/useGetBookingsByUserID"
 import { useBookingLoadingContext } from "@/app/hooks/useBookingLoadingContext"
-import { useRouter } from "next/navigation"
 import { IState } from "../../(profiles)/student/page"
+import { toast } from "react-toastify";
 
 interface IProps {
     closeModal: () => void,
@@ -17,14 +19,22 @@ export default function DeleteBookingModal ({closeModal, setState, booking_id, u
     const { setIsLoading } = useBookingLoadingContext();
     const { deleteBooking } = useDeleteBooking();
     const { getBookings } = useGetBookingsByUserId({setIsLoading});
-    const router = useRouter();
 
     const handleDelete = async () => {
         closeModal();
-        const res = await deleteBooking(date, booking_id);
-        //fetch new bookings
-        const bookings = await getBookings(user_id);
-        setState(bookings);
+        await toast.promise(() => 
+            deleteBooking(date, booking_id)
+                .then(() => 
+                    getBookings(user_id)
+                ).then((booking) => {
+                    setState(booking);
+            })
+        ,
+            {
+                success: "Booking deleted!",
+                error: "An error occured",
+            }
+        );
     }
 
     return (

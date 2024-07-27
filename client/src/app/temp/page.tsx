@@ -8,7 +8,7 @@ export default function Temp() {
     const Child = () => (
         <>
             <h2>TESTING 123</h2>
-            <UpcomingBooking date="Wed Jul 10 2024" time="8:00 AM" booking_id="asdf"/>
+            
         </>
     );
     return (
