@@ -1,47 +1,26 @@
-'use client'
-
 import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/hooks/useAuthContext";
-import { useLogout } from "@/app/hooks/useLogout";
-import Layout from "@/app/components/layout";
 import error from "next/error";
-import { useAnnouncementContext } from "../hooks/useAnnouncementContext";
+import { useAnnouncementContext } from "../../hooks/useAnnouncementContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+interface IProps {
+    callback: () => void
+}
 
-
-
-export default function AnnouncementForm () {
-
+export default function AnnouncementForm({ callback } : IProps) {
     const router = useRouter();
-    const { logout } = useLogout();
     const { state } = useAuthContext();
     
     //retrieve stored user in localstorage
     const retrieve = state.user;
-    const token = retrieve?.token ? retrieve.token : ''
+    const token = retrieve?.token
+    const name = retrieve?.user.name
+    const role = retrieve?.user.role
 
-    var user;
-    if (retrieve) {
-        user = retrieve.user;
-    } else {
-        user = {email:"", name: "", role:""};
-    }
-
-    const handleClick = () => {
-        logout();
-        //send back to login page
-        router.push("/");
-    }
-
-    const name = user.name
-    const role = user.role
-
-
-
-
+    
     const { dispatch } = useAnnouncementContext()
     // variables to store input field data
     const [title, setTitle] = useState('')
@@ -94,6 +73,7 @@ export default function AnnouncementForm () {
                 progress: undefined,
                 theme: "light",
                 });
+            callback()
         }
         if(response.ok){
             setTitle('')
@@ -104,17 +84,12 @@ export default function AnnouncementForm () {
         }
     }
 
-    const reRoute = () => {
-        router.replace('/profile')
-    }
-
 
 
     
         return (
-            <Layout>
-                <div className="flex flex-col items-center px-4 py-5">
-                    <form className="w-full max-w-md space-y-6 border rounded-lg ring-4 ring-teal-600 px-5 py-5" onSubmit={ handleSubmit }>
+                <div>
+                    <form className="fixed w-full max-w-2xl top-[30%] left-[50%] bg-white z-30 space-y-6 border rounded-lg ring-4 ring-teal-600 px-5 py-5" onSubmit={ handleSubmit }>
                         <h1 className="text-center align-text-top text-3xl font-semi m-1 text-title-green mb-6">Create new Announcement</h1>
 
                         <input type="text" name="title" className={input_style} placeholder="Title:" onChange={(e) => setTitle(e.target.value)} value={title}/>
@@ -122,12 +97,12 @@ export default function AnnouncementForm () {
                         <input type="text" name="message" className={desc_input_style} placeholder="Message:" onChange={(e) => setMessage(e.target.value)} value={message}/>
 
                         <div className="flex flex-row">
-                            <button className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full mr-2 transition-colors" type="button" onClick={reRoute}>Cancel</button>
+                            <button className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full mr-2 transition-colors" type="button" onClick={callback}>Cancel</button>
                             <button className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full ml-2 transition-colors" type="submit">Submit</button>
                         </div>
                     </form>
+                    <div className="fixed w-screen h-screen z-20 bg-gray-400/75" onClick={callback}></div>
                     <ToastContainer />
                 </div>
-            </Layout>
         )
 }
