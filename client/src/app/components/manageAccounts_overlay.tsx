@@ -19,7 +19,7 @@ export default function ManageAccountOptions({ callback, createAcc, data } : IPr
 
     return (
             <div> 
-                <div className="flex flex-row fixed w-full max-w-2xl top-[30%] left-[50%] bg-white z-30 border rounded-lg ring-4 ring-teal-600 p-2">
+                <div className="flex flex-row fixed w-full max-w-2xl top-[30%] left-[35%] bg-white z-30 border rounded-lg ring-4 ring-teal-600 p-2">
                     <div className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full p-16 mr-2 transition-colors">
                         <ExportExcel excelData={data} fileName={'Accounts_List'} callback={callback} />
                     </div>

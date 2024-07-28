@@ -1,7 +1,7 @@
 import { useAuthContext } from "../hooks/useAuthContext";
 import React, { FormEvent, useState } from "react";
 import error from "next/error";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface IProps {
@@ -95,11 +95,11 @@ export default function RegisterUserForm({ callback } : IProps) {
             <form className="fixed w-full max-w-2xl top-[30%] left-[50%] bg-white z-30 space-y-6 border rounded-lg ring-4 ring-teal-600 px-5 py-5" onSubmit={ handleSubmit }>
                 <h1 className="text-center align-text-top text-3xl font-semi m-1 text-title-green mb-6">Please fill in your particulars</h1>
 
-                <input type="text" name="name" className={input_style} placeholder="Name:" onChange={(e) => setName(e.target.value)} value={name}/>
+                <input required type="text" name="name" className={input_style} placeholder="Name:" onChange={(e) => setName(e.target.value)} value={name}/>
 
-                <input type="text" name="itemDamaged" className={input_style} placeholder="Email:" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                <input  required type="text" name="email" className={input_style} placeholder="Email:" onChange={(e) => setEmail(e.target.value)} value={email}/>
 
-                <input type="text" name="description" className={input_style} placeholder="Password:" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <input required type="text" name="password" className={input_style} placeholder="Password:" onChange={(e) => setPassword(e.target.value)} value={password}/>
 
                 <div className="flex flex-row">
                     <button className= "flex justify-center items-center bg-tembu-green hover:bg-tembu-lightgreen text-white rounded cursor-pointer w-full mr-2 transition-colors" type="button" onClick={callback}>Cancel</button>
