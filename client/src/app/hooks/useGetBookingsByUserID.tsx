@@ -33,14 +33,18 @@ export const useGetBookingsByUserId = ({setIsLoading}:IParams) => {
             } else {
                 //200 ok
                 const myBookings = response_data["bookings"];
-                const dates = Object.keys(myBookings);
-                var arr = [];
+                const dates = Object.keys(myBookings); //string array of all dates where this user has a booking
+                var arr = []; 
+                const today = new Date();
                 for (var d of dates) {
-                    var bookings_by_date = myBookings[d]; //timeslots on date d
-                    let obj;
-                    for (let i = 0; i < bookings_by_date.length; i++) {
-                        obj = {date: d, time: bookings_by_date[i].time, id: bookings_by_date[i]._id};
-                        arr.push(obj);
+                    var d_as_Date = new Date(d);
+                    if (d_as_Date >= today) {
+                        var bookings_by_date = myBookings[d]; //timeslots on date d
+                        let obj;
+                        for (let i = 0; i < bookings_by_date.length; i++) {
+                            obj = {date: d, time: bookings_by_date[i].time, id: bookings_by_date[i]._id};
+                            arr.push(obj);
+                        }
                     }
                 }
                 setIsLoading(false);
