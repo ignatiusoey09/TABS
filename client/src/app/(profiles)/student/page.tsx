@@ -49,8 +49,6 @@ export default function Profile() {
         const fetchData = async () => {
             const myBookings = await getBookings(user.id);
             setUserBookings(myBookings);
-            console.log(myBookings[0].id);
-            console.log(myBookings);
         }
         fetchData();
     }, []);
