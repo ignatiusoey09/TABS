@@ -36,13 +36,15 @@ export const useGetBookingsByUserId = ({setIsLoading}:IParams) => {
                 const dates = Object.keys(myBookings); //string array of all dates where this user has a booking
                 var arr = []; 
                 const today = new Date();
+                today.setHours(0, 0, 0, 0);
                 for (var d of dates) {
                     var d_as_Date = new Date(d);
                     if (d_as_Date >= today) {
                         var bookings_by_date = myBookings[d]; //timeslots on date d
                         let obj;
                         for (let i = 0; i < bookings_by_date.length; i++) {
-                            obj = {date: d, time: bookings_by_date[i].time, id: bookings_by_date[i]._id};
+                            var time = bookings_by_date[i].time;
+                            obj = {date: d, time: time, id: bookings_by_date[i]._id};
                             arr.push(obj);
                         }
                     }

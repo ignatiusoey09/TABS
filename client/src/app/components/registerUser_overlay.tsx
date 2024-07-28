@@ -92,7 +92,7 @@ export default function RegisterUserForm({ callback } : IProps) {
 
     return (
             <div> 
-            <form className="fixed w-full max-w-2xl top-[30%] left-[50%] bg-white z-30 space-y-6 border rounded-lg ring-4 ring-teal-600 px-5 py-5" onSubmit={ handleSubmit }>
+            <form className="fixed w-full max-w-2xl top-[25%] left-[35%] bg-white z-30 space-y-6 border rounded-lg ring-4 ring-teal-600 px-5 py-5" onSubmit={ handleSubmit }>
                 <h1 className="text-center align-text-top text-3xl font-semi m-1 text-title-green mb-6">Please fill in your particulars</h1>
 
                 <input required type="text" name="name" className={input_style} placeholder="Name:" onChange={(e) => setName(e.target.value)} value={name}/>
