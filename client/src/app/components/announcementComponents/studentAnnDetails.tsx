@@ -23,10 +23,8 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({ announcement 
     return (
         <div className="flex flex-col items-start py-3 transition duration-300 ease-in-out hover:bg-gray-200">
             <div className="flex-grow flex flex-col justify-between">
-                <div>
                     <h4 className="text-lg font-semibold">{announcement.title}</h4>
                     <p className="text-gray-600 text-sm">{announcement.message}</p>
-                </div>
             </div>
             <div className='flex flex-row w-full mt-4'>
                 <p className="mr-auto text-xs text-gray-500">
