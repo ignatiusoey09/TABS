@@ -1,45 +1,60 @@
 'use client'
 
-import { useState, useEffect, use } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/app/hooks/useAuthContext";
 import { useLogout } from "@/app/hooks/useLogout";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import UpcomingBooking  from "@/app/components/profileComponents/upcoming_booking";
+import { useGetBookingsByUserId } from "@/app/hooks/useGetBookingsByUserID";
+import { useBookingLoadingContext } from "@/app/hooks/useBookingLoadingContext";
 import 'react-toastify/dist/ReactToastify.css';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import Layout from "@/app/components/layout";
-import ReportDetails from "@/app/components/reportDetails";
 import AnnouncementForm from "@/app/components/announcementComponents/announcementForm_overlay";
 import RegisterUserForm from "@/app/components/registerUser_overlay";
 import ManageAccountOptions from "@/app/components/manageAccounts_overlay";
+import { MoonLoader } from "react-spinners";
 
-interface Report {
-    _id?: string,
-    name: string,
-    item: string,
-    description: string,
-    createdAt?: string
-    updatedAt?: string
+interface IUser {
+    id: string,
+        email: string,
+        name: string,
+        role: string,
+};
+
+interface IState {
+    date: string,
+    time: string,
+    id: string,
 }
 
 export default function Profile () {
     const router = useRouter();
     const { logout } = useLogout();
     const { state } = useAuthContext();
+    const { isLoading, setIsLoading } = useBookingLoadingContext();
+    const { getBookings } = useGetBookingsByUserId({setIsLoading});
+    const [ userBookings, setUserBookings ] = useState<IState[]>([]);
     
     //retrieve stored user in localstorage
     const retrieve = state.user;
-    const token = retrieve?.token ? retrieve.token : ''
 
-    var user;
+    var user:IUser;
     if (retrieve) {
         user = retrieve.user;
     } else {
-        user = {email:"", name: "", role:""};
+        user = {id:"", email:"", name: "", role:"",};
     }
 
-    const handleClick = () => {
+    useEffect(() => {
+        const fetchData = async () => {
+            const myBookings = await getBookings(user.id);
+            setUserBookings(myBookings);
+        }
+        fetchData();
+    }, []);
+
+    const handleLogout = () => {
         logout();
         //send back to login page
         router.push("/");
@@ -74,7 +89,7 @@ export default function Profile () {
 
         const response = await fetch(`${backend_url}/api/user/getusers`, {
             headers: {
-                'Authorization': `Bearer ${state.user?.token}`
+                'Authorization': `Bearer ${retrieve?.token}`
             }
         })
         let json = await response.json()
@@ -101,42 +116,45 @@ export default function Profile () {
 
 
     // handle opening and closing abbey timeslots
-    const manageAbbey = () => {
+    const manageAbbey = () => {}
 
-    }
+    const TOOL_BUTTON_STYLE = "bg-gray-100 p-2 rounded-lg w-26 text-xs text-center"
 
     return (
         <Layout>
-            <div className="flex flex-col w-full grow">
+            <div className="flex flex-col w-full h-screen">
                 {announcementModal && <AnnouncementForm callback={handleAnnouncementModalClose} />}
                 {registerModal && <RegisterUserForm callback={handleRegisterModalClose}/>}
                 {showOptions && <ManageAccountOptions callback={handleShowOptionsClose} createAcc={newAccount} data={data} />}
-                <h1 className="text-4xl pl-7 pt-7 mt-0 text-title-gray">QUARTERMASTER PAGE</h1>
-                <h2 className="text-3xl pl-8 pt-3">
-                    {user.email}
-                </h2>
-                <h2 className="text-gray-600 pl-7 pt-4">
-                    {user.role}
-                </h2>
-                <h2 className="text-gray-600 pl-7 py-1">
-                    {user.name}
-                </h2>
-
-                <div className="flex-grow py-11 pl-6">
-                    <div>
-                        <button onClick={handleReport} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">View Reports</button>
-                        <button onClick={newAnnouncement} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">New Announcement</button>
-                        <button onClick={manageAccount} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">Manage Accounts</button>
-                        <button onClick={manageAbbey} className="bg-gray-100 p-6 rounded-lg mb-4 w-full text-left flex items-center">Manage Abbey Slots</button>
+                <div className="ml-10 mt-5">
+                    <h1 className="text-4xl text-title-gray">QUARTERMASTER</h1>
+                    <h2 className="text-3xl mt-1">
+                        {user.email}
+                    </h2>
+                    <h2 className="text-gray-600 mt-1">
+                        {user.name}
+                    </h2>
+                    <div className="mt-4 flex flex-row space-x-8 items-center">
+                            <button onClick={handleReport} className={TOOL_BUTTON_STYLE}>View Reports</button>
+                            <button onClick={newAnnouncement} className={TOOL_BUTTON_STYLE}>New Announcement</button>
+                            <button onClick={manageAccount} className={TOOL_BUTTON_STYLE}>Manage Accounts</button>
+                            <button onClick={manageAbbey} className={TOOL_BUTTON_STYLE}>Manage Abbey Slots</button>
                     </div>
-                </div>
-
-
+                    <div className="mt-8 w-[70%] h-36">
+                        <h1>My Bookings</h1>
+                        <MoonLoader className="mx-auto mt-20" loading={isLoading}/>
+                        {!isLoading && <div className="flex flex-col space-y-4 overflow-y-auto h-64">
+                            {userBookings.map(x => (
+                                <UpcomingBooking setState={setUserBookings} date={x.date} time={x.time} booking_id={x.id} user_id={user.id}/>
+                            ))}
+                        </div>}
+                    </div>
+                </div> 
                 <button
-                    className="mt-auto self-center text-xl text-red-600 pt-2"
-                    onClick={handleClick}>
-                        Logout
-                </button>  
+                        className="mt-auto mb-4 self-center text-xl text-red-600"
+                        onClick={handleLogout}>
+                            Logout
+                    </button>
                 <ToastContainer />
             </div>
         </Layout>
