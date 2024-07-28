@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import Layout from "../../components/layout";
 import { useLogout } from "../../hooks/useLogout";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import React, { FormEvent, useState, useEffect } from "react";
-import error from "next/error";
+import React, { useEffect } from "react";
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,13 +25,6 @@ export default function Announcements() {
         user = retrieve.user;
     } else {
         user = {email:"", name: "", role:"",};
-    }
-    
-
-    const handleClick = () => {
-        logout();
-        //send back to login page
-        router.push("/");
     }
 
     // display latest list of annnouncemnts
@@ -71,18 +63,18 @@ export default function Announcements() {
 
     return (
             <Layout>
-            <div>
-                <h2 className="text-center my-5 align-text-top text-3xl m-1 text-title-gray">Announcements</h2>
+            <div className="ml-8 mt-8">
+                <h2 className="align-text-top text-3xl text-title-gray">Announcements</h2>
 
-                <div>
-                {stateAnn.announcements.length == 0 && (
-                <div className="bg-gray-100 p-6 rounded-lg mb-4 mx-1 borderbg-gray-100 transition duration-300 ease-in-out hover:bg-gray-200 ring-teal-500 ring-2">
-                    <h1 className="text-center text-xl text-gray-600 font-semibold p-6">No announcements 🥳</h1>
-                </div>
-            )}
-                {stateAnn && stateAnn.announcements && stateAnn.announcements.map(announcement => (
-                    <AnnouncementDetails key={announcement._id} announcement={announcement} />
-                ))}
+                <div className="flex flex-col mt-12 pr-1 overflow-y-auto w-[85%] h-96 divide-y-2">
+                    {stateAnn.announcements.length == 0 && (
+                    <div className="bg-gray-100 p-6 rounded-lg mb-4 mx-1 borderbg-gray-100 transition duration-300 ease-in-out hover:bg-gray-200">
+                        <h1 className="text-center text-xl text-gray-600 font-semibold p-6">No announcements 🥳</h1>
+                    </div>
+                    )}
+                    {stateAnn && stateAnn.announcements && stateAnn.announcements.map(announcement => (
+                        <AnnouncementDetails key={announcement._id} announcement={announcement} />
+                    ))}
                 </div>
                 <ToastContainer />
             </div>
