@@ -1,10 +1,10 @@
 import { useAnnouncementContext } from "../../hooks/useAnnouncementContext";
 import React from 'react'; // Import React
 import Link from 'next/link';
-import { FaRegTrashAlt,FaUserCircle,FaRegEdit } from "react-icons/fa";
+import { FaRegTrashAlt,FaRegEdit } from "react-icons/fa";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Announcement {
@@ -92,30 +92,29 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({ announcement,
 
 
     return (
-        <div className="bg-gray-100 p-6 rounded-lg mb-4 mx-1 relative flex items-start transition duration-300 ease-in-out hover:bg-gray-200 ring-2 ring-teal-500">
-            <img alt="profile" className="w-16 h-16 rounded-full shadow-md mr-4" />
-            <div className="flex-grow flex flex-col justify-between">
-                <div>
+        <div className="flex flex-row items-start py-3 transition duration-300 ease-in-out hover:bg-gray-200">
+            <div className="grow flex flex-col">
+                <div className="flex flex-col justify-between">
                     <h4 className="text-lg font-semibold">{announcement.title}</h4>
-                    <p className="text-gray-600">{announcement.message}</p>
+                    <p className="text-gray-600 text-sm">{announcement.message}</p>
                 </div>
-                <div className="flex justify-between items-center w-full mt-2">
-                    <p className="text-xs text-gray-500">{announcement.name} - {announcement.role}</p>
+                <div className='flex flex-row w-full mt-4'>
+                    <p className="mr-auto text-xs text-gray-500">
+                        {new Date(date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric'
+                        })}
+                    </p>
+                    <p className="ml-auto text-xs text-gray-500">{announcement.name} - {announcement.role}</p>
                 </div>
             </div>
-            <p className="text-xs text-gray-500 absolute left-4 bottom-4">
-                {new Date(date).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                })}
-            </p>
-            <div className="flex absolute right-4 bottom-4 space-x-2">
-            <Link href={`/updateAnnouncement?id=${encodeURIComponent(id)}`}>
-                <FaRegEdit color="#9f7aea" size="22px" />
-            </Link>
-            <span onClick={handleDelete} className="cursor-pointer">
-                <FaRegTrashAlt color="#e3342f" size="22px" />
-             </span>
+            <div className="flex flex-col w-10">
+                <button className="self-center cursor-pointer" onClick={handleDelete}>
+                    <FaRegTrashAlt color="#e3342f" size="16px" />
+                </button>
+                <Link className="pl-1 self-center" href={`/updateAnnouncement?id=${encodeURIComponent(id)}`}>
+                    <FaRegEdit color="#9f7aea" size="16px" />
+                </Link>
             </div>
         </div>
     )
