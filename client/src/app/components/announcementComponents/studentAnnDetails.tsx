@@ -48,7 +48,7 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({ announcement 
                 <div className='absolute top-[20%] left-[40%] flex flex-col bg-white rounded h-80 w-96 z-50 p-4 overflow-y-auto'>
                     <h1 className='font-semibold text-xl'>{announcement.title}</h1>
                     <p className='mt-6 text-sm'>{announcement.message}</p>
-                    <div className='mt-auto flex flex-row'>
+                    <div className='mt-auto pt-2 flex flex-row'>
                         <p className='text-gray-500 text-left text-xs'>{short_date}</p>
                         <p className='text-gray-500 grow text-right text-xs'>{announcer}</p>
                     </div>

@@ -118,15 +118,15 @@ export default function Profile () {
     // handle opening and closing abbey timeslots
     const manageAbbey = () => {}
 
-    const TOOL_BUTTON_STYLE = "bg-gray-100 p-2 rounded-lg w-26 text-xs text-center"
+    const TOOL_BUTTON_STYLE = "bg-gray-100 p-1 rounded-lg text-xs text-center lg:p-2"
 
     return (
         <Layout>
-            <div className="flex flex-col w-full h-screen">
+            <div className="flex flex-col w-full h-full">
                 {announcementModal && <AnnouncementForm callback={handleAnnouncementModalClose} />}
                 {registerModal && <RegisterUserForm callback={handleRegisterModalClose}/>}
                 {showOptions && <ManageAccountOptions callback={handleShowOptionsClose} createAcc={newAccount} data={data} />}
-                <div className="ml-10 mt-5">
+                <div className="ml-2 mt-5 lg:ml-10">
                     <h1 className="text-4xl text-title-gray">QUARTERMASTER</h1>
                     <h2 className="text-3xl mt-1">
                         {user.email}
@@ -134,7 +134,7 @@ export default function Profile () {
                     <h2 className="text-gray-600 mt-1">
                         {user.name}
                     </h2>
-                    <div className="mt-4 flex flex-row space-x-8 items-center">
+                    <div className="mt-4 flex flex-row space-x-1 items-center lg:space-x-8">
                             <button onClick={handleReport} className={TOOL_BUTTON_STYLE}>View Reports</button>
                             <button onClick={newAnnouncement} className={TOOL_BUTTON_STYLE}>New Announcement</button>
                             <button onClick={manageAccount} className={TOOL_BUTTON_STYLE}>Manage Accounts</button>
