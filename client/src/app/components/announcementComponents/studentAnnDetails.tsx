@@ -45,7 +45,7 @@ const AnnouncementDetails: React.FC<AnnouncementDetailsProps> = ({ announcement 
         {isModalOpen && 
             <>
                 <div className='absolute top-0 left-0 bg-gray-500/50 h-screen w-screen z-40' onClick={()=>setIsModalOpen(false)}/>
-                <div className='absolute top-[20%] left-[40%] flex flex-col bg-white rounded h-80 w-96 z-50 p-4 overflow-y-auto'>
+                <div className='absolute top-[20%] left-[8%] flex flex-col bg-white rounded h-96 w-80 z-50 p-4 overflow-y-auto lg:left-[40%] lg:w-96 lg:h-80'>
                     <h1 className='font-semibold text-xl'>{announcement.title}</h1>
                     <p className='mt-6 text-sm'>{announcement.message}</p>
                     <div className='mt-auto pt-2 flex flex-row'>

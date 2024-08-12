@@ -140,7 +140,7 @@ export default function Profile () {
                             <button onClick={manageAccount} className={TOOL_BUTTON_STYLE}>Manage Accounts</button>
                             <button onClick={manageAbbey} className={TOOL_BUTTON_STYLE}>Manage Abbey Slots</button>
                     </div>
-                    <div className="mt-8 w-[70%] h-36">
+                    <div className="mt-8 w-[95%] h-36 lg:w-[70%]">
                         <h1>My Bookings</h1>
                         <MoonLoader className="mx-auto mt-20" loading={isLoading}/>
                         {!isLoading && <div className="flex flex-col space-y-4 overflow-y-auto h-64">

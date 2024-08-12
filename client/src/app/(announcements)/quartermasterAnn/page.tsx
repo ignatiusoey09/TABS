@@ -59,10 +59,10 @@ export default function Announcements() {
     
     return (
             <Layout>
-            <div className="ml-8 mt-8">
+            <div className="ml-2 mt-8 lg:ml-8">
                 <h2 className="align-text-top text-3xl text-title-gray">Announcements</h2>
 
-                <div className="flex flex-col mt-12 pr-1 overflow-y-auto w-[85%] h-96 divide-y-2">
+                <div className="flex flex-col mt-12 pr-1 overflow-y-auto w-[95%%] h-[600px] divide-y-2 lg:w-[85%] lg:h-96">
                     {stateAnn.announcements.length == 0 && (
                     <div className="bg-gray-100 p-6 rounded-lg mb-4 mx-1 borderbg-gray-100 transition duration-300 ease-in-out hover:bg-gray-200">
                         <h1 className="text-center text-xl text-gray-600 font-semibold p-6">No announcements 🥳</h1>
