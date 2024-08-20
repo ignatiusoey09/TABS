@@ -9,5 +9,3 @@ This project aims to automate most of the menial tasks involved in the creation 
 
 # Tech Stack
 This project uses the MERN stack with NextJS, as well as other technologies like JWT and TailwindCss.
-
-# User Guide
