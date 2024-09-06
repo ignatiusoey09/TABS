@@ -11,9 +11,10 @@ export default function BookingOverlay({datetime, callback} : IProps) {
     const { state } = useAuthContext();
     const router = useRouter();
 
+    const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
     const handleBooking = async () => {
         try {
-            const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL, {
+            const response = await fetch(`${backend_url}/api/booking/make_booking`, {
                 headers: {
                     'Content-Type': 'application/JSON',
                     'Authorization': `Bearer ${state.user?.token}` 
