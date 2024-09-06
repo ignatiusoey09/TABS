@@ -13,7 +13,7 @@ export default function BookingOverlay({datetime, callback} : IProps) {
 
     const handleBooking = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/booking/make_booking", {
+            const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL, {
                 headers: {
                     'Content-Type': 'application/JSON',
                     'Authorization': `Bearer ${state.user?.token}` 
